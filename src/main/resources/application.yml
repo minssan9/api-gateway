@@ -1,0 +1,75 @@
+server:
+  port: 30000
+
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - name: GlobalFilter
+          args:
+            baseMessage: Gateway GlobalFilter
+            preLogger: true
+            postLogger: true
+      routes:
+        - id: erp-svc
+          uri: http://localhost:34000/
+          predicates:
+            - Path=/erp/**
+          filters:
+            - name: ERPFilter
+              args:
+                baseMessage: Spring Cloud Gateway ERPFilter
+                preLogger: true
+                postLogger: true
+        - id: wms-svc
+          uri: http://localhost:34002/
+          predicates:
+            - Path=/wms/**
+          filters:
+            - name: WMSFilter
+              args:
+                baseMessage: Spring Cloud Gateway WMSFilter
+                preLogger: true
+                postLogger: true
+  security:
+    oauth2:
+      client:
+        client-id: hallahds
+        client-secret: hallahdsapi
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@10.20.101.17:1531/test1
+    username: apps
+    password: apps
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: com.gateway.database.CustomOracleDialect
+      
+
+secret:
+  salt:
+    key: hallahdstest
+
+custom:
+  clientId: hallahds
+  clientSecret: secret
+  jwtkey: hallahds
+  accessTokenValidTime: 1060
+  refreshTokenValidTime: 61060
+  scopes:
+    - read
+    - profile
+    - write
+  grantTypes:
+    - authorization_code
+    - password
+    - refresh_token
+
+authenticated-server:
+  ipList:
+    - 10.20.101.181
+    - 10.20.101.143
+    - 10.30.74.1
+    - 10.30.71.156
