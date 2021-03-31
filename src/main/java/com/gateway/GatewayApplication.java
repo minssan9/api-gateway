@@ -26,19 +26,4 @@ public class GatewayApplication {
         return ServerCodecConfigurer.create();
     }
 
-    @Bean
-    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
-        return builder.routes()
-            .route("api_route", r -> r
-                .path("/api")
-                .uri("http://localhost:34000"))
-            .route("wms_route", r -> r.host("/wms")
-                .uri("http://localhost:34001"))
-            .route("rewrite_route", r -> r
-                .host("10.30.71.156")
-                .filters(f -> f
-                    .rewritePath("/foo/(?<segment>.*)", "/${segment}"))
-                .uri("http://httpbin.org"))
-            .build();
-    }
 }
