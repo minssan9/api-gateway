@@ -1,4 +1,4 @@
-package com.gateway.database;
+package com.gateway.config.database;
 
 import org.hibernate.dialect.Oracle10gDialect;
 

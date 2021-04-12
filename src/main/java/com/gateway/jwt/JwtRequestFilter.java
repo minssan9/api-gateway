@@ -31,7 +31,9 @@ public class JwtRequestFilter extends
                 String token = exchange.getRequest().getHeaders().get("Authorization").get(0).substring(7);
             } catch (NullPointerException e) {
                 log.warn("no token.");
+
                 exchange.getResponse().setStatusCode(HttpStatus.valueOf(401));
+
                 log.info("status code :" + exchange.getResponse().getStatusCode());
                 return chain.filter(exchange);
             }
