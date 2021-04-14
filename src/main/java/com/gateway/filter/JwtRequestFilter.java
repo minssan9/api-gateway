@@ -2,8 +2,9 @@ package com.gateway.filter;
 
 import static com.gateway.config.properties.StaticProperties.AUTH_SERVER_URL;
 
-import com.gateway.domain.Account;
-import com.gateway.domain.LoginInfo;
+import com.gateway.account.domain.Account;
+import com.gateway.account.domain.LoginInfo;
+import com.gateway.account.redis.AccountRepository;
 import com.gateway.service.JwtValidator;
 import com.google.gson.Gson;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -14,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
@@ -27,6 +29,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
@@ -39,13 +42,13 @@ public class JwtRequestFilter extends
     AbstractGatewayFilterFactory<JwtRequestFilter.Config> implements Ordered {
 
     @Autowired
-    RedisTemplate redisTemplate;
-    @Autowired
     private JwtValidator jwtValidator;
     @Autowired
-    Gson gson;
+    private Gson gson;
     @Autowired
-    WebClient webClient;
+    private WebClient webClient;
+    @Autowired
+    AccountRepository accountRepository;
 
     @Override
     public int getOrder() {
@@ -107,6 +110,8 @@ public class JwtRequestFilter extends
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
             try {
+
+
                 String token = exchange.getRequest().getHeaders().get("Authorization").get(0)
                     .substring(7);
 
@@ -136,14 +141,13 @@ public class JwtRequestFilter extends
                         .bodyToMono(Account.class)
                         .block();
 
-                    Map<String, Object> userInfo = jwtValidator.getUserParseInfo(token);
-                    ArrayList<String> arr = (ArrayList<String>) userInfo.get("role");
-                    if (!arr.contains(config.getRole())) {
+                    Account userInfo = jwtValidator.getUserParseInfo(token);
+                    Set<GrantedAuthority> authorities =  userInfo.getAuthorities();
+                    if (!authorities.contains(config.getRole())) {
                         throw new IllegalArgumentException();
                     }
                     //generate Token and save in redis
-                    ValueOperations<String, Object> vop = redisTemplate.opsForValue();
-                    vop.set(account.getId(), account.);
+                    accountRepository.save(account);
                 }
             } catch (NullPointerException e) {
                 log.warn("no token.");

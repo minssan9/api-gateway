@@ -59,7 +59,8 @@ dependencies {
         exclude group: "org.springframework.boot", module: "spring-boot-starter-web"
     }
 
-    implementation 'org.springframework.session:spring-session-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-redis'
+    implementation 'org.springframework.data:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'redis.clients:jedis'
 

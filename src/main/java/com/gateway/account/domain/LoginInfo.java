@@ -1,12 +1,8 @@
-package com.gateway.domain;
+package com.gateway.account.domain;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import javax.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.redis.core.RedisHash;
 
 @Setter
 @Getter

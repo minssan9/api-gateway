@@ -1,8 +1,11 @@
 package com.gateway.service;
 
 
+import com.gateway.account.domain.Account;
+import com.gateway.account.redis.AccountRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -10,49 +13,55 @@ import java.io.Serializable;
 import java.util.*;
 
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JwtValidator implements Serializable {
-
-    private static final long serialVersionUID = -2550185165626007488L;
+@Slf4j
+public class JwtValidator  {
     @Value("${jwt.secret}")
     private String secret;
-    private static final Logger logger = LoggerFactory.getLogger(JwtValidator.class);
 
-    public Map<String, Object> getUserParseInfo(String token) {
+    @Autowired
+    private AccountRepository accountRepository ;
+
+    public Account getUserParseInfo(String token) {
         Claims parseInfo = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-        Map<String, Object> result = new HashMap<>();
         //expiration date < now
         boolean isExpired = !parseInfo.getExpiration().before(new Date());
-        result.put("username", parseInfo.getSubject());
-        result.put("role", parseInfo.get("role", List.class));
-        result.put("isExpired", isExpired);
-        return result;
+
+        Account account = new Account(parseInfo.getSubject(), "password", parseInfo.get("role", Set.class), isExpired );
+        return account;
     }
 
-    private boolean isValidate(String token) {
+    // Request의 Header에서 token 값을 가져옴. "X-AUTH-TOKEN" : "TOKEN값'
+    public String resolveToken(HttpServletRequest request) {
+        return request.getHeader("X-AUTH-TOKEN");
+    }
+
+
+    // 토큰의 유효성 + 만료일자 확인
+    public boolean validateToken(String jwtToken, String checkAuth) {
+        boolean result = true;
         try {
-            Map<String, Object> info = getUserParseInfo(token);
-        }
-        // token is expired
-        catch (ExpiredJwtException e) {
-            logger.warn("The token is expired.");
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(jwtToken);
+
+            Account account = accountRepository.findByUsername(claims.getBody().get("username").toString()) ;
+            if ( !claims.getBody().getExpiration().before(new Date())) return false;
+
+            if (claims.getBody().getget("authoritiesqq      1qqqq")checkAuth ) return false;
+
+            return result;
+        } catch (Exception e) {
             return false;
         }
-        // signature is wrong
-//        catch (SignatureException e) {
-//            logger.warn("Signature of the token is wrong.");
-//            return false;
-//        }
-        // format is wrong
-        catch (MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
-            logger.warn("The token string is wrong format.");
-            return false;
-        }
-        return true;
     }
 }
