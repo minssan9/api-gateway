@@ -1,15 +1,13 @@
 package com.gateway.config.handler;
 
-import com.core.config.exception.CommonException;
-import com.core.config.exception.CommonExceptionType;
+import com.gateway.config.exception.CommonException;
+import com.gateway.config.exception.CommonExceptionType;
 import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -22,21 +20,21 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @Slf4j
 @RestControllerAdvice
 public class ExceptionHandlerAdvice {
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public Map<String, Object> duplicateEx(Exception e) {
-        log.warn("DataIntegrityViolationException" + e.getClass());
-        Map<String, Object> map = new HashMap<>();
-        map.put("errorCode", 53);
-        return map;
-    }
-
-    @ExceptionHandler(BadCredentialsException.class)
-    public Map<String, Object> badCredentialEx(Exception e) {
-        log.warn("BadCredentialsException");
-        Map<String, Object> map = new HashMap<>();
-        map.put("errorCode", 63);
-        return map;
-    }
+//    @ExceptionHandler(DataIntegrityViolationException.class)
+//    public Map<String, Object> duplicateEx(Exception e) {
+//        log.warn("DataIntegrityViolationException" + e.getClass());
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("errorCode", 53);
+//        return map;
+//    }
+//
+//    @ExceptionHandler(BadCredentialsException.class)
+//    public Map<String, Object> badCredentialEx(Exception e) {
+//        log.warn("BadCredentialsException");
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("errorCode", 63);
+//        return map;
+//    }
 
     @ExceptionHandler({
         IllegalArgumentException.class, MissingServletRequestParameterException.class})

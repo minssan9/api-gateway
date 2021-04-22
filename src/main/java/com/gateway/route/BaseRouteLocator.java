@@ -1,7 +1,6 @@
 package com.gateway.route;
 
-import com.gateway.jwt.JwtRequestFilter;
-import com.gateway.jwt.JwtRequestFilter.Config;
+import com.gateway.filter.JwtRequestFilter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
@@ -20,14 +19,14 @@ public class BaseRouteLocator  {
 
             .route("erp_route", r -> r.path("/api/erp")
                 .filters(f->f
-                    .filter(jwtFilter.apply(new JwtRequestFilter.Config("dummy", true, false)))
+                    .filter(jwtFilter.apply(new JwtRequestFilter.Config("dummy")))
                     .addRequestHeader("Hello", "World")
                 .rewritePath("/api/erp", "/"))
                 .uri("http://localhost:34000"))
 
             .route("wms_route", r -> r.path("/api/wms")
                 .filters(f->f
-                    .filter(jwtFilter.apply(new JwtRequestFilter.Config("dummy", true, false)))
+                    .filter(jwtFilter.apply(new JwtRequestFilter.Config("dummy")))
                     .rewritePath("/api/wms", "/"))
                 .uri("http://localhost:34001"))
 

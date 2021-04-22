@@ -2,27 +2,18 @@ package com.gateway.service;
 
 
 import com.gateway.account.domain.Account;
-import com.gateway.account.redis.AccountRepository;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import java.io.Serializable;
+
 import java.util.*;
 
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ServerWebExchange;
 
 @Component
 @Slf4j
@@ -30,8 +21,11 @@ public class JwtValidator  {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Autowired
-    private AccountRepository accountRepository ;
+    // 객체 초기화, secretKey를 Base64로 인코딩
+    @PostConstruct
+    protected void init() {
+        secret = Base64.getEncoder().encodeToString(secret.getBytes());
+    }
 
     public Account getUserParseInfo(String token) {
         Claims parseInfo = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
@@ -43,8 +37,9 @@ public class JwtValidator  {
     }
 
     // Request의 Header에서 token 값을 가져옴. "X-AUTH-TOKEN" : "TOKEN값'
-    public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("X-AUTH-TOKEN");
+    public String resolveToken(ServerWebExchange request) {
+        return request.getRequest().getHeaders().get("X-AUTH-TOKEN").get(0);
+//        return request.getRequest().getHeaders().get("Authorization").get(0);
     }
 
 
@@ -53,15 +48,19 @@ public class JwtValidator  {
         boolean result = true;
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(jwtToken);
-
-            Account account = accountRepository.findByUsername(claims.getBody().get("username").toString()) ;
             if ( !claims.getBody().getExpiration().before(new Date())) return false;
 
-            if (claims.getBody().getget("authoritiesqq      1qqqq")checkAuth ) return false;
+            if (claims.getBody().get("").equals("")) return false;
 
             return result;
         } catch (Exception e) {
             return false;
         }
+    }
+
+
+    // 토큰에서 회원 정보 추출
+    public String getUserPk(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
 }

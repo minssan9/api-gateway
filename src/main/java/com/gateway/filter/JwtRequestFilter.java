@@ -4,7 +4,6 @@ import static com.gateway.config.properties.StaticProperties.AUTH_SERVER_URL;
 
 import com.gateway.account.domain.Account;
 import com.gateway.account.domain.LoginInfo;
-import com.gateway.account.redis.AccountRepository;
 import com.gateway.service.JwtValidator;
 import com.google.gson.Gson;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -12,10 +11,8 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
@@ -24,13 +21,9 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Component;
+import org.springframework.http.MediaType;import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
@@ -47,8 +40,6 @@ public class JwtRequestFilter extends
     private Gson gson;
     @Autowired
     private WebClient webClient;
-    @Autowired
-    AccountRepository accountRepository;
 
     @Override
     public int getOrder() {
@@ -110,10 +101,7 @@ public class JwtRequestFilter extends
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
             try {
-
-
-                String token = exchange.getRequest().getHeaders().get("Authorization").get(0)
-                    .substring(7);
+                String token =  jwtValidator.resolveToken(exchange);
 
                 Map<String, String> userMap = gson.fromJson(exchange.getRequest().getBody().toString(),
                     new HashMap<String, String>().getClass());
@@ -133,7 +121,7 @@ public class JwtRequestFilter extends
 
                     Account account = webClient
                         .post()
-                        .uri("/oauth/token")
+                        .uri("/token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .bodyValue(loginInfo)
@@ -142,12 +130,10 @@ public class JwtRequestFilter extends
                         .block();
 
                     Account userInfo = jwtValidator.getUserParseInfo(token);
-                    Set<GrantedAuthority> authorities =  userInfo.getAuthorities();
+                    Set<String> authorities =  userInfo.getAuthorities();
                     if (!authorities.contains(config.getRole())) {
                         throw new IllegalArgumentException();
                     }
-                    //generate Token and save in redis
-                    accountRepository.save(account);
                 }
             } catch (NullPointerException e) {
                 log.warn("no token.");
