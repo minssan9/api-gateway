@@ -38,8 +38,6 @@ public class JwtRequestFilter extends
     private JwtValidator jwtValidator;
     @Autowired
     private Gson gson;
-    @Autowired
-    private WebClient webClient;
 
     @Override
     public int getOrder() {
@@ -90,9 +88,6 @@ public class JwtRequestFilter extends
         }
     }
 
-//    @Override
-//    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-
     public JwtRequestFilter() {
         super(Config.class);
     }
@@ -131,6 +126,7 @@ public class JwtRequestFilter extends
 
                     Account userInfo = jwtValidator.getUserParseInfo(token);
                     Set<String> authorities =  userInfo.getAuthorities();
+
                     if (!authorities.contains(config.getRole())) {
                         throw new IllegalArgumentException();
                     }

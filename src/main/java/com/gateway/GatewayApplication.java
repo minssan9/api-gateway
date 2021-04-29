@@ -13,11 +13,6 @@ public class GatewayApplication {
     public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class, args);
     }
-    // tag::fallback[]
-    @RequestMapping("/fallback")
-    public Mono<String> fallback() {
-        return Mono.just("fallback");
-    }
 
     @Bean
     public ServerCodecConfigurer serverCodecConfigurer() {
