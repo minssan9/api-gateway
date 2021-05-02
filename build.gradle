@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.0-M3'
+    id 'org.springframework.boot' version '2.4.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
@@ -7,6 +7,13 @@ plugins {
 group = 'com.hallahds'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
+
+
+bootJar {
+    manifest {
+        attributes 'Start-Class': 'com.gateway.GatewayApplication'
+    }
+}
 
 repositories {
     mavenCentral()
@@ -27,16 +34,13 @@ ext {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
     compile("org.springframework.cloud:spring-cloud-starter-netflix-hystrix:2.2.7.RELEASE")
     compile("org.springframework.cloud:spring-cloud-starter-contract-stub-runner"){
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-web"
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-webflux"
     }
 
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.security.oauth:spring-security-oauth2:2.3.4.RELEASE'
 
 
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
@@ -46,8 +50,6 @@ dependencies {
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     testImplementation "org.projectlombok:lombok:${lombokVersion}"
-
-    implementation 'com.oracle:ojdbc6:11.2.0.3'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'

@@ -36,16 +36,6 @@ spring:
       client:
         client-id: hallahds
         client-secret: hallahdsapi
-  datasource:
-    driver-class-name: oracle.jdbc.driver.OracleDriver
-    url: jdbc:oracle:thin:@10.20.101.17:1531/test1
-    username: apps
-    password: apps
-  jpa:
-    properties:
-      hibernate:
-        format_sql: true
-        dialect: com.gateway.database.CustomOracleDialect
       
 
 secret:
