@@ -12,54 +12,34 @@ spring:
             postLogger: true
       routes:
         - id: erp-svc
-          uri: http://localhost:34000/
+          uri: http://10.20.101.181/api/erp
           predicates:
-            - Path=/erp/**
+            - Path=/api/erp/**
           filters:
             - name: ERPFilter
               args:
                 baseMessage: Spring Cloud Gateway ERPFilter
                 preLogger: true
                 postLogger: true
-        - id: wms-svc
-          uri: http://localhost:34002/
+        - id: auth-svc
+          uri: http://10.20.101.181:34009/
           predicates:
-            - Path=/wms/**
+            - Path=/api/auth/**
           filters:
-            - name: WMSFilter
+            - name: AuthFilter
               args:
                 baseMessage: Spring Cloud Gateway WMSFilter
                 preLogger: true
                 postLogger: true
-  security:
-    oauth2:
-      client:
-        client-id: hallahds
-        client-secret: hallahdsapi
-      
+                
 
-secret:
-  salt:
-    key: hallahdstest
-
-custom:
-  clientId: hallahds
-  clientSecret: secret
-  jwtkey: hallahds
-  accessTokenValidTime: 1060
-  refreshTokenValidTime: 61060
-  scopes:
-    - read
-    - profile
-    - write
-  grantTypes:
-    - authorization_code
-    - password
-    - refresh_token
-
-authenticated-server:
-  ipList:
-    - 10.20.101.181
-    - 10.20.101.143
-    - 10.30.74.1
-    - 10.30.71.156
+#        - id: wms-svc
+#          uri: http://10.20.101.181:34002/
+#          predicates:
+#            - Path=/wms/**
+#          filters:
+#            - name: WMSFilter
+#              args:
+#                baseMessage: Spring Cloud Gateway WMSFilter
+#                preLogger: true
+#                postLogger: true

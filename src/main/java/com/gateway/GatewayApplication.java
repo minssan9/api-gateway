@@ -1,6 +1,5 @@
 package com.gateway;
 
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -15,30 +14,28 @@ public class GatewayApplication {
     public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class, args);
     }
-    // tag::fallback[]
+
     @RequestMapping("/fallback")
     public Mono<String> fallback() {
         return Mono.just("fallback");
     }
 
 //    @Bean
-//    public ServerCodecConfigurer serverCodecConfigurer() {
-//        return ServerCodecConfigurer.create();
+//    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+//        return builder.routes()
+//            .route("api_route", r -> r
+//                .path("/api")
+//                .uri("http://10.20.101.181:34000"))
+//
+//            .route("wms_route", r -> r.host("/wms")
+//                .uri("http://localhost:34001"))
+//
+//            .route("rewrite_route", r -> r
+//                .host("10.30.71.156")
+//                .filters(f -> f
+//                    .rewritePath("/foo/(?<segment>.*)", "/${segment}"))
+//                .uri("http://httpbin.org"))
+//
+//            .build();
 //    }
-
-    @Bean
-    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
-        return builder.routes()
-            .route("api_route", r -> r
-                .path("/api")
-                .uri("http://localhost:34000"))
-            .route("wms_route", r -> r.host("/wms")
-                .uri("http://localhost:34001"))
-            .route("rewrite_route", r -> r
-                .host("10.30.71.156")
-                .filters(f -> f
-                    .rewritePath("/foo/(?<segment>.*)", "/${segment}"))
-                .uri("http://httpbin.org"))
-            .build();
-    }
 }
