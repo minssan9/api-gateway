@@ -1,7 +1,7 @@
 package com.gateway.exceptionhandler;
 
-import com.core.config.exception.CommonException;
-import com.core.config.exception.CommonExceptionType;
+import com.gateway.exception.CommonException;
+import com.gateway.exception.CommonExceptionType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

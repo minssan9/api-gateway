@@ -45,7 +45,7 @@ dependencies {
         exclude group: "org.springframework.boot", module: "spring-boot-starter-webflux"
     }
 
-    implementation 'com.hallahds:api-core:1.0'
+//    implementation 'com.hallahds:api-core:1.0'
 
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"

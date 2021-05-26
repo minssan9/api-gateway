@@ -10,28 +10,28 @@ spring:
             baseMessage: Gateway GlobalFilter
             preLogger: true
             postLogger: true
-      routes:
-        - id: erp-svc
-          uri: http://10.20.101.181/api/erp
-          predicates:
-            - Path=/api/erp/**
-          filters:
-            - name: ERPFilter
-              args:
-                baseMessage: Spring Cloud Gateway ERPFilter
-                preLogger: true
-                postLogger: true
-        - id: auth-svc
-          uri: http://10.20.101.181:34009/
-          predicates:
-            - Path=/api/auth/**
-          filters:
-            - name: AuthFilter
-              args:
-                baseMessage: Spring Cloud Gateway WMSFilter
-                preLogger: true
-                postLogger: true
-                
+#      routes:
+#        - id: erp-svc
+#          uri: http://10.20.101.181/api/erp
+#          predicates:
+#            - Path=/api/erp/**
+#          filters:
+#            - name: ERPFilter
+#              args:
+#                baseMessage: Spring Cloud Gateway ERPFilter
+#                preLogger: true
+#                postLogger: true
+#        - id: auth-svc
+#          uri: http://10.20.101.181:34009/
+#          predicates:
+#            - Path=/api/auth/**
+#          filters:
+#            - name: AuthFilter
+#              args:
+#                baseMessage: Spring Cloud Gateway WMSFilter
+#                preLogger: true
+#                postLogger: true
+
 
 #        - id: wms-svc
 #          uri: http://10.20.101.181:34002/
