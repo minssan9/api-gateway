@@ -1,7 +1,7 @@
 package com.gateway.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gateway.auth.TokenInfo;
+import com.gateway.account.TokenInfo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
