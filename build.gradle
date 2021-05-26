@@ -1,8 +1,20 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.7.RELEASE")
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.4.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
 
 group = 'com.hallahds'
 version = '0.0.1-SNAPSHOT'
@@ -16,6 +28,7 @@ bootJar {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     mavenLocal()
     maven { url 'https://repo.spring.io/milestone' }
@@ -32,6 +45,12 @@ ext {
     queryDslVersion = '4.3.1'
     hikaricpVersion = '3.4.1'
     projectVersion = '0.0.1-' + new Date().format('yyyyMMddHHmmss')
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Greenwich.SR2"
+    }
 }
 
 dependencies {
@@ -55,6 +74,12 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     testImplementation "org.projectlombok:lombok:${lombokVersion}"
 
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'com.oracle:ojdbc6:11.2.0.3'
+
+    implementation 'com.google.code.gson:gson'
+
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
 
@@ -62,11 +87,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
-}
 
 test {
     useJUnitPlatform()
