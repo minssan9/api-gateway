@@ -14,20 +14,11 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
 // TODO : For the admin, we need to add a controller advice with a corresponded exception.
 @Slf4j
 @RestControllerAdvice
 public class ExceptionHandlerAdvice {
-//    @ExceptionHandler(DataIntegrityViolationException.class)
-//    public Map<String, Object> duplicateEx(Exception e) {
-//        log.warn("DataIntegrityViolationException" + e.getClass());
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("errorCode", 53);
-//        return map;
-//    }
-//
 //    @ExceptionHandler(BadCredentialsException.class)
 //    public Map<String, Object> badCredentialEx(Exception e) {
 //        log.warn("BadCredentialsException");
@@ -36,14 +27,14 @@ public class ExceptionHandlerAdvice {
 //        return map;
 //    }
 
-    @ExceptionHandler({
-        IllegalArgumentException.class, MissingServletRequestParameterException.class})
-    public Map<String, Object> paramsEx(Exception e) {
-        log.warn("params ex: "+ e);
-        Map<String, Object> map = new HashMap<>();
-        map.put("errorCode", 51);
-        return map;
-    }
+//    @ExceptionHandler({
+//        IllegalArgumentException.class, MissingServletRequestParameterException.class})
+//    public Map<String, Object> paramsEx(Exception e) {
+//        log.warn("params ex: "+ e);
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("errorCode", 51);
+//        return map;
+//    }
 
     @ExceptionHandler(NullPointerException.class)
     public Map<String, Object> nullEx(Exception e) {
@@ -101,27 +92,27 @@ public class ExceptionHandlerAdvice {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    // There is no handler
-    @ExceptionHandler(NoHandlerFoundException.class)
-    protected ResponseEntity<ExceptionResponse> handleNoHandlerFoundException(
-        NoHandlerFoundException e) {
-        log.error("NoHandlerFoundException", e);
-        final ExceptionResponse response = new ExceptionResponse(
-            CommonExceptionType.INTERNAL_SERVER_ERROR, e);
-
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
+//    // There is no handler
+//    @ExceptionHandler(NoHandlerFoundException.class)
+//    protected ResponseEntity<ExceptionResponse> handleNoHandlerFoundException(
+//        NoHandlerFoundException e) {
+//        log.error("NoHandlerFoundException", e);
+//        final ExceptionResponse response = new ExceptionResponse(
+//            CommonExceptionType.INTERNAL_SERVER_ERROR, e);
+//
+//        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+//    }
 
     // There is no http method
-    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    protected ResponseEntity<ExceptionResponse> handleHttpRequestMethodNotSupportedException(
-        HttpRequestMethodNotSupportedException e) {
-        log.error("HttpRequestMethodNotSupportedException", e);
-        final ExceptionResponse response = new ExceptionResponse(
-            CommonExceptionType.INTERNAL_SERVER_ERROR, e);
-
-        return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
-    }
+//    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+//    protected ResponseEntity<ExceptionResponse> handleHttpRequestMethodNotSupportedException(
+//        HttpRequestMethodNotSupportedException e) {
+//        log.error("HttpRequestMethodNotSupportedException", e);
+//        final ExceptionResponse response = new ExceptionResponse(
+//            CommonExceptionType.INTERNAL_SERVER_ERROR, e);
+//
+//        return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
+//    }
 
     // Authentication object doesn't have any authority
     @ExceptionHandler(AccessDeniedException.class)

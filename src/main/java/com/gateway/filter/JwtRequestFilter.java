@@ -1,18 +1,13 @@
 package com.gateway.filter;
 
-import static com.gateway.config.properties.StaticProperties.AUTH_SERVER_URL;
-
+import com.gateway.account.LoginInfo;
 import com.gateway.account.domain.Account;
-import com.gateway.account.domain.LoginInfo;
 import com.gateway.service.JwtValidator;
 import com.google.gson.Gson;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
@@ -23,11 +18,19 @@ import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;import org.springframework.stereotype.Component;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import static com.gateway.config.properties.StaticProperties.AUTH_SERVER_URL;
 
 @Component
 @Slf4j
@@ -114,15 +117,15 @@ public class JwtRequestFilter extends
                         .baseUrl(AUTH_SERVER_URL)
                         .build();
 
-                    Account account = webClient
-                        .post()
-                        .uri("/token")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .bodyValue(loginInfo)
-                        .retrieve()
-                        .bodyToMono(Account.class)
-                        .block();
+//                    Account account = webClient
+//                        .post()
+//                        .uri("/token")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .bodyValue(loginInfo)
+//                        .retrieve()
+//                        .bodyToMono(Account.class)
+//                        .block();
 
                     Account userInfo = jwtValidator.getUserParseInfo(token);
                     Set<String> authorities =  userInfo.getAuthorities();

@@ -1,0 +1,105 @@
+server:
+  port: 36000
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders:
+              - x-requested-with
+              - authorization
+              - content-type
+              - credential
+              - X-AUTH-TOKEN
+              - X-CSRF-TOKEN
+            allowedMethods:
+              - POST
+              - GET
+              - PUT
+              - OPTIONS
+              - DELETE
+      default-filters:
+        - name: GlobalFilter
+          args:
+            baseMessage: Gateway GlobalFilter
+            preLogger: true
+            postLogger: true
+#      routes:
+#        - id: erp-svc
+#          uri: http://10.20.101.181/api/erp
+#          predicates:
+#            - Path=/api/erp/**
+#          filters:
+#            - name: ERPFilter
+#              args:
+#                baseMessage: Spring Cloud Gateway ERPFilter
+#                preLogger: true
+#                postLogger: true
+#        - id: auth-svc
+#          uri: http://10.20.101.181:34009/
+#          predicates:
+#            - Path=/api/auth/**
+#          filters:
+#            - name: AuthFilter
+#              args:
+#                baseMessage: Spring Cloud Gateway WMSFilter
+#                preLogger: true
+#                postLogger: true
+
+      routes:
+        - id: erp-svc
+          uri: http://localhost:34000/
+          predicates:
+            - Path=/erp/**
+          filters:
+            - name: ERPFilter
+              args:
+                baseMessage: Spring Cloud Gateway ERPFilter
+                preLogger: true
+                postLogger: true
+        - id: wms-svc
+          uri: http://localhost:34002/
+          predicates:
+            - Path=/wms/**
+          filters:
+            - name: WMSFilter
+              args:
+                baseMessage: Spring Cloud Gateway WMSFilter
+                preLogger: true
+                postLogger: true
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@10.20.101.17:1531/test1
+    username: apps
+    password: apps
+ 
+  redis:
+    host: localhost
+    port: 6379
+    jedis.pool.max-active: 10000
+    jedis.pool.max-idle: 50
+    jedis.pool.max-wait: -1
+    jedis.pool.min-idle: 0
+    timeout: 0
+
+jwt:
+  secret: hallahds
+secret:
+  salt:
+    key: hallahdstest
+
+#        - id: wms-svc
+#          uri: http://10.20.101.181:34002/
+#          predicates:
+#            - Path=/wms/**
+#          filters:
+#            - name: WMSFilter
+#              args:
+#                baseMessage: Spring Cloud Gateway WMSFilter
+#                preLogger: true
+#                postLogger: true

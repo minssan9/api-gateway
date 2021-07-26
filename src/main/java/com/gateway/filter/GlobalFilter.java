@@ -1,17 +1,14 @@
 package com.gateway.filter;
 
 import com.gateway.filter.GlobalFilter.Config;
-import com.gateway.service.JwtService;
+import com.gateway.service.JwtValidator;
 import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -22,7 +19,7 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
     }
 
     @Autowired
-    JwtService jwtService;
+    JwtValidator jwtValidator;
 
     @Override
     public GatewayFilter apply(Config config) {
@@ -34,7 +31,7 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
             }
 
             String accessToken = exchange.getRequest().getHeaders().get("Authorization").toString();
-            jwtService.getClaimsFromJWT(accessToken);
+            jwtValidator.getClaimsFromJWT(accessToken);
 
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
 
