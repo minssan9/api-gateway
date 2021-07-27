@@ -4,7 +4,7 @@ import static com.gateway.config.properties.StaticProperties.AUTH_SERVER_URL;
 
 import com.gateway.account.domain.Account;
 import com.gateway.account.domain.LoginInfo;
-import com.gateway.service.JwtValidator;
+import com.gateway.account.service.JwtValidator;
 import com.google.gson.Gson;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -98,8 +98,10 @@ public class JwtRequestFilter extends
             try {
                 String token =  jwtValidator.resolveToken(exchange);
 
-                Map<String, String> userMap = gson.fromJson(exchange.getRequest().getBody().toString(),
-                    new HashMap<String, String>().getClass());
+                Map<String, String> userMap = gson.fromJson(
+                        exchange.getRequest().getBody().toString(),
+                        new HashMap<String, String>().getClass()
+                );
 
                 final LoginInfo loginInfo = LoginInfo.builder()
                     .username(userMap.get("username"))

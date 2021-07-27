@@ -4,10 +4,12 @@ import java.util.Set;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.redis.core.RedisHash;
+
 @Getter
 @Setter
 @Builder
-//@RedisHash("account")
+@RedisHash("account")
 public class Account   {
     private  String username;
     private String password;
