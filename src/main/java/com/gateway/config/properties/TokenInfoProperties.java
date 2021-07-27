@@ -1,4 +1,4 @@
-package com.gateway.account.domain;
+package com.gateway.config.properties;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @Getter
 @ConfigurationProperties(prefix = "custom")
-public class TokenInfo {
+public class TokenInfoProperties {
     String clientId;
     String clientSecret;
     String jwtKey;

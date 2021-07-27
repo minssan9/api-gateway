@@ -1,0 +1,44 @@
+server:
+  port: 31000
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders:
+              - x-requested-with
+              - authorization
+              - content-type
+              - credential
+              - X-AUTH-TOKEN
+              - X-CSRF-TOKEN
+            allowedMethods:
+              - POST
+              - GET
+              - PUT
+              - OPTIONS
+              - DELETE
+      default-filters:
+        - name: GlobalFilter
+          args:
+            baseMessage: Gateway GlobalFilter
+            preLogger: true
+            postLogger: true
+
+  redis:
+    jedis.pool.max-active: 10000
+    jedis.pool.max-idle: 50
+    jedis.pool.max-wait: -1
+    jedis.pool.min-idle: 0
+    timeout: 0
+
+jwt:
+  secret: hallahds
+secret:
+  salt:
+    key: hallahdstest

@@ -4,6 +4,7 @@ import java.util.Set;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
 @Getter
@@ -11,6 +12,7 @@ import org.springframework.data.redis.core.RedisHash;
 @Builder
 @RedisHash("account")
 public class Account   {
+    @Id
     private  String username;
     private String password;
     private Set<String> authorities;

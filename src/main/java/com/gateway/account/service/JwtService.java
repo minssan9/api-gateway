@@ -1,7 +1,7 @@
 package com.gateway.account.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gateway.account.domain.TokenInfo;
+import com.gateway.config.properties.TokenInfoProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -22,14 +22,14 @@ import org.springframework.stereotype.Service;
 public class JwtService {
 
     @Autowired
-    TokenInfo tokenInfo;
+    TokenInfoProperties tokenInfoProperties;
     @Autowired
     ObjectMapper objectMapper;
 
     public Map<String, Object> getClaimsFromJWT(String token) {
         Jws<Claims> claimsJws = null;
         claimsJws = Jwts.parser()
-            .setSigningKey(tokenInfo.getJwtKey().getBytes(StandardCharsets.UTF_8))
+            .setSigningKey(tokenInfoProperties.getJwtKey().getBytes(StandardCharsets.UTF_8))
             .parseClaimsJws(token);
 
         if (validateExp(claimsJws))
