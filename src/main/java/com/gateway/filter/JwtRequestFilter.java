@@ -2,7 +2,7 @@ package com.gateway.filter;
 
 import com.gateway.account.LoginInfo;
 import com.gateway.account.domain.Account;
-import com.gateway.service.JwtValidator;
+import com.gateway.account.service.JwtValidator;
 import com.google.gson.Gson;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;

@@ -1,7 +1,7 @@
 package com.gateway.filter;
 
 import com.gateway.filter.GlobalFilter.Config;
-import com.gateway.service.JwtValidator;
+import com.gateway.account.service.JwtValidator;
 import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
