@@ -1,4 +1,4 @@
-package com.gateway.account;
+package com.gateway.account.domain;
 
 import lombok.Getter;
 import lombok.Setter;

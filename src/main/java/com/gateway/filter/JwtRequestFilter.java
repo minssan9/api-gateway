@@ -101,8 +101,10 @@ public class JwtRequestFilter extends
             try {
                 String token =  jwtValidator.resolveToken(exchange);
 
-                Map<String, String> userMap = gson.fromJson(exchange.getRequest().getBody().toString(),
-                    new HashMap<String, String>().getClass());
+                Map<String, String> userMap = gson.fromJson(
+                        exchange.getRequest().getBody().toString(),
+                        new HashMap<String, String>().getClass()
+                );
 
                 final LoginInfo loginInfo = LoginInfo.builder()
                     .username(userMap.get("username"))

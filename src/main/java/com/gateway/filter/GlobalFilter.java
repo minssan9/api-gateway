@@ -34,7 +34,6 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
             jwtValidator.getClaimsFromJWT(accessToken);
 
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
-
                 if (config.isPostLogger()) {
                     logger.info("GlobalFilter End>>>>>>" + exchange.getResponse());
                 }
