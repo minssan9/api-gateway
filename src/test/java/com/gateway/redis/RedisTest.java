@@ -1,18 +1,30 @@
 package com.gateway.redis;
 
-import static org.junit.Assert.assertEquals;
-
 import com.gateway.account.domain.Account;
+import com.gateway.account.domain.TokenInfo;
+import com.gateway.account.repository.TokenInfoRepository;
 import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
+@ActiveProfiles("develop")
 public class RedisTest {
 
-//    @Autowired
-//    private AccountRepository accountRepository;
+    @Autowired
+    private final TokenInfoRepository tokenInfoRepository;
+
+    @Autowired
+    private final RedisTemplate redisTemplate;
+
+    public RedisTest(TokenInfoRepository tokenInfoRepository, RedisTemplate redisTemplate) {
+        this.tokenInfoRepository = tokenInfoRepository;
+        this.redisTemplate = redisTemplate;
+    }
 
     @After
     public void tearDown() throws Exception {
@@ -21,21 +33,16 @@ public class RedisTest {
 
     @Test
     public void 기본_등록_조회기능() {
-        // given
-        String username = "nayoon";
-
-        Account account= (Account) Account.builder()
-            .username(username)
-            .password("1234")
-            .build();
-
+        //시작일자
+        TokenInfo tokenInfo = new TokenInfo("P14394", "test_minssan9");
         // when
-//        accountRepository.save(account);
+        tokenInfoRepository.save(tokenInfo);
+        final ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        valueOperations.set(tokenInfo.getId(), tokenInfo.getToken());
 
         // then
-//        Account savedAccount = accountRepository.findByUsername(username).get();
-//        assertEquals(savedAccount.getPassword(), "1234");
-//        assertEquals(savedAccount.getUsername(), username);
+        TokenInfo savedToken = tokenInfoRepository.findById(tokenInfo.getId()).get();
+
     }
 
     @Test

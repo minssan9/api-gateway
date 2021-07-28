@@ -1,7 +1,8 @@
+---
 spring:
   profiles:
     group:
-      "develop" : "develop, default"
+      "develop": "develop, default"
 ---
 spring:
   profiles:

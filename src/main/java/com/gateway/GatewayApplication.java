@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RequestMapping;
 import reactor.core.publisher.Mono;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.gateway"})
 public class GatewayApplication {
 
     public static void main(String[] args) {

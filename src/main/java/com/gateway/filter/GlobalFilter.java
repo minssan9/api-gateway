@@ -1,7 +1,12 @@
 package com.gateway.filter;
 
+import com.gateway.account.repository.TokenInfoRepository;
+import com.gateway.config.exception.CommonException;
+import com.gateway.config.exception.CommonExceptionType;
 import com.gateway.filter.GlobalFilter.Config;
 import com.gateway.account.service.JwtValidator;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,8 +23,6 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
         super(Config.class);
     }
 
-    @Autowired
-    JwtValidator jwtValidator;
 
     @Override
     public GatewayFilter apply(Config config) {
@@ -29,10 +32,6 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
             if (config.isPreLogger()) {
                 logger.info("GlobalFilter Start>>>>>>" + exchange.getRequest());
             }
-
-            String accessToken = exchange.getRequest().getHeaders().get("Authorization").toString();
-            jwtValidator.getClaimsFromJWT(accessToken);
-
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
                 if (config.isPostLogger()) {
                     logger.info("GlobalFilter End>>>>>>" + exchange.getResponse());

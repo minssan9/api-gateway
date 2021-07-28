@@ -1,7 +1,7 @@
 
 plugins {
-    id 'org.springframework.boot' version '2.3.4.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'org.springframework.boot' version '2.4.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
 apply plugin: 'org.springframework.boot'
@@ -27,9 +27,8 @@ repositories {
 ext {
     projectGroup = 'com.hallahds'
     lombokVersion = '1.18.18'
-    springBootVersion = '2.3.2'
-    springCloudVersion = "Hoxton.SR8"
-    projectVersion = '0.0.1-' + new Date().format('yyyyMMddHHmmss')
+    springCloudVersion = "2020.0.2"
+    projectVersion = '0.1.0-' + new Date().format('yyyyMMddHHmmss')
 }
 
 dependencyManagement {
@@ -43,6 +42,7 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'redis.clients:jedis'
+    implementation 'junit:junit:4.12'
 
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
@@ -52,16 +52,16 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     testImplementation "org.projectlombok:lombok:${lombokVersion}"
 
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'com.google.code.gson:gson'
 
+    testImplementation 'junit:junit:4.12'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
 }
-
 
 test {
     useJUnitPlatform()

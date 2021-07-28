@@ -21,10 +21,11 @@ public enum CommonExceptionType {
 
     // business
     NOTEXIST_ITEM("4100", "Cannot found Item"),
-    NOTEXIST_ITEM_TEMPLATE("4100", "Cannot found Item template");
+    NOTEXIST_ITEM_TEMPLATE("4100", "Cannot found Item template"),
 
 
-    // database
+    // token
+    TOKEN_EXPIRED("9000", "Access Token is expired");
 
     private final String errorCode;
     private final String errorMessage;

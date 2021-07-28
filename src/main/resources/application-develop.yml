@@ -1,5 +1,24 @@
+#  develop
+---
 spring:
   redis:
     host: 10.20.101.99
     port: 6379
-
+  application:
+    name: apigateway-develop
+  cloud:
+    gateway:
+      routes:
+        - id: api-erp
+          uri: http://10.20.101.99:34000/
+          predicates:
+            - Path=/api/erp/**
+          filters:
+            - ERPFilter
+        - id: api-auth
+          uri: http://10.20.101.134:34009/
+          predicates:
+            - Path=/api/auth/**
+#          filters:
+#            - AddRequestHeader=second-request, second-request-header2
+#            - AddResponseHeader=second-response, second-response-header2

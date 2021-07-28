@@ -1,12 +1,14 @@
 package com.gateway.account.service;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gateway.account.domain.Account;
 import com.gateway.config.properties.TokenInfoProperties;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
@@ -16,6 +18,7 @@ import java.util.*;
 
 @Component
 @Slf4j
+@PropertySource(value = {"classpath:application-default.yml"})
 public class JwtValidator {
     @Value("${jwt.secret}")
     private String secret;
