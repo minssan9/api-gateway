@@ -4,6 +4,7 @@ import com.gateway.account.domain.TokenInfo;
 import com.gateway.account.repository.TokenInfoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
@@ -23,6 +24,8 @@ public class ApplicationRunnerTaskExecutor implements ApplicationRunner {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Value("${spring.application.name}")
+    String applicationName ;
     public ApplicationRunnerTaskExecutor(TokenInfoRepository tokenInfoRepository) {
         this.tokenInfoRepository = tokenInfoRepository;
     }
@@ -30,5 +33,7 @@ public class ApplicationRunnerTaskExecutor implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args)  {
+
+        log.info(applicationName);
     }
 }

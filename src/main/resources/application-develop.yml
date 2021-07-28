@@ -1,24 +1,49 @@
 #  develop
 ---
+
+server:
+  db:
+    redis:
+      host: 10.20.101.99
+      port: 6379
+  api:
+    erp: http://10.20.101.99:34000
+    auth: http://10.20.101.134:34009
+
 spring:
   redis:
-    host: 10.20.101.99
-    port: 6379
+    host: ${server.db.redis.host}
+    port: ${server.db.redis.port}
   application:
     name: apigateway-develop
   cloud:
     gateway:
       routes:
         - id: api-erp
-          uri: http://10.20.101.99:34000/
+          uri: ${server.api.erp}
           predicates:
             - Path=/api/erp/**
+            - Method=POST, GET
           filters:
+            - RewritePath=/api/erp/(?<segment>.*), /$\{segment}
             - ERPFilter
         - id: api-auth
-          uri: http://10.20.101.134:34009/
+          uri: ${server.api.auth}
           predicates:
             - Path=/api/auth/**
-#          filters:
+            - Method=POST, GET
+          filters:
+#            - RemoveRequestHeader=Cookie
+            - RewritePath=/api/auth/(?<segment>.*), /$\{segment}
 #            - AddRequestHeader=second-request, second-request-header2
 #            - AddResponseHeader=second-response, second-response-header2
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "gateway"
+  endpoint:
+    gateway:
+      enabled: true

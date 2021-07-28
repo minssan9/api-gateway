@@ -28,7 +28,7 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
     public GatewayFilter apply(Config config) {
 
         return (exchange, chain) -> {
-            logger.info("GlobalFilter baseMessage>>>>>>" + config.getBaseMessage());
+//            logger.info("GlobalFilter baseMessage>>>>>>" + config.getBaseMessage());
             if (config.isPreLogger()) {
                 logger.info("GlobalFilter Start>>>>>>" + exchange.getRequest());
             }
