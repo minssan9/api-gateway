@@ -1,0 +1,55 @@
+node {
+    //git_branch = sed -i 's|origin/|'"${params.GIT_BRANCH}"'|'
+    git_branch = "${params.GIT_BRANCH.replace("origin/", "")}"
+    stage("Parameter Check") {
+        echo 'Start'
+        echo "${env.JOB_NAME}"
+        echo "${params.GIT_BRANCH}"
+        echo "${git_branch}"
+
+    }
+    stage ('Clone'){
+        git branch: "${git_branch}", credentialsId: 'git_erp_user', url: 'http://10.20.101.172:8111/hds_api/hds_api_gateway.git'
+    }
+    stage("Compilations") {
+        sh "chmod +x gradlew"
+        sh "./gradlew :api:clean :api:build -x test"
+    }
+
+    stage("Staging") {
+        // sh "pid=\$(lsof -i:8989 -t); kill -TERM \$pid "
+        //   + "|| kill -KILL \$pid"
+        // withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
+        //     sh 'nohup ./mvnw spring-boot:run -Dserver.port=8989 &'
+        // }
+        sh "docker build -t hds_api_gateway:${BUILD_NUMBER} ./api"
+        sh "docker tag hds_api_gateway:${BUILD_NUMBER} 10.20.101.172:5000/hds_api_gateway"
+        sh "docker push 10.20.101.172:5000/hds_api_gateway"
+
+        try {
+            // develop redeploy
+            sh """
+            curl -u "${HOMS_CATTLE_ACCESS_KEY}:${HOMS_CATTLE_SECRET_KEY}" \
+            -X POST \\
+            -H "Accept: application/json" \\
+            -H "Content-Type: application/json" \\
+            "https://10.20.101.172/v3/project/c-266jz:p-d7tbd/workloads/daemonset:erp-dev:hds-api-gateway-${git_branch}?action=redeploy" --insecure
+            """
+        } catch (e) {
+            sh 'echo develop deploy Fail!!'
+        }
+
+        try {
+            // release redeploy
+            sh """
+            curl -u "${HOMS_CATTLE_ACCESS_KEY}:${HOMS_CATTLE_SECRET_KEY}" \
+            -X POST \
+            -H "Accept: application/json" \
+            -H "Content-Type: application/json" \
+            "https://10.20.101.172/v3/project/c-hf5s6:p-qf444/workloads/daemonset:hds-web:hds-api-gateway-${git_branch}?action=redeploy" --insecure
+            """
+        } catch (e) {
+            sh 'echo develop deploy Fail!!'
+        }
+    }
+}
