@@ -1,7 +1,7 @@
 FROM java:8
 # Add Author info
 LABEL maintainer="sanghun.min@halla.com"
-o
+
 # Add a volume to /tmp
 VOLUME /hallahds/gateway
 
