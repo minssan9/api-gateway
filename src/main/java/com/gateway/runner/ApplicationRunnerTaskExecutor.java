@@ -23,10 +23,10 @@ public class ApplicationRunnerTaskExecutor implements ApplicationRunner {
 
     @Value("${spring.application.name}")
     String applicationName ;
+
     public ApplicationRunnerTaskExecutor(TokenInfoRepository tokenInfoRepository) {
         this.tokenInfoRepository = tokenInfoRepository;
     }
-
 
     @Override
     public void run(ApplicationArguments args)  {

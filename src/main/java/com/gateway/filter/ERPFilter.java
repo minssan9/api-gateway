@@ -36,11 +36,12 @@ public class ERPFilter extends AbstractGatewayFilterFactory<Config> {
                 logger.info("ERPFilter Start>>>>>>" + exchange.getRequest());
             }
 
-            String accessToken = exchange.getRequest().getHeaders().get("Authorization").toString();
 
-            if ( jwtValidator.getClaimsFromJWT(accessToken).isEmpty()) {
-                throw new CommonException(CommonExceptionType.TOKEN_EXPIRED);
-            };
+//            Access Token 있는지 확인
+//            String accessToken = exchange.getRequest().getHeaders().get("Authorization").toString();
+//            if ( jwtValidator.getClaimsFromJWT(accessToken).isEmpty()) {
+//                throw new CommonException(CommonExceptionType.TOKEN_EXPIRED);
+//            };
 
 
 

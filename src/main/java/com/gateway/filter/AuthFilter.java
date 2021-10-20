@@ -43,6 +43,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<Config> {
             if (config.isPreLogger()) {
                 logger.info("ERPFilter Start>>>>>>" + exchange.getRequest());
             }
+
             String path = exchange.getRequest().getPath().toString();
             String accountId = exchange.getRequest().getHeaders().get("username").toString();
             String accessToken = exchange.getRequest().getHeaders().get("Authorization").toString();

@@ -6,12 +6,12 @@ server:
       host: 10.20.101.99
       port: 6379
   api:
-    erp: http://10.20.101.99:34000
-    auth: http://10.20.101.99:34009
-    homs: http://10.20.101.171:8080
+    erp: http://localhost:34000
+    auth: http://localhost:34009
+    homs: http://localhost:8080
 
-#    wms: http://10.20.101.99:34009
-#    bms: http://10.20.101.99:34009
+#    wms: http://localhost:34009
+#    bms: http://localhost:34009
 
 spring:
   redis:
