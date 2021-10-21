@@ -45,7 +45,6 @@ public class ERPFilter extends AbstractGatewayFilterFactory<Config> {
 
 
 
-
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
                 if (config.isPostLogger()) {
                     logger.info("ERPFilter End>>>>>>" + exchange.getResponse());

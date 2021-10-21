@@ -23,6 +23,8 @@ public enum CommonExceptionType {
     NOTEXIST_ITEM("4100", "Cannot found Item"),
     NOTEXIST_ITEM_TEMPLATE("4100", "Cannot found Item template"),
 
+    // runtime
+    NULL_POINTER_EXCEPTION("5100", "Null Pointer Exception"),
 
     // token
     TOKEN_EXPIRED("9000", "Access Token is expired");

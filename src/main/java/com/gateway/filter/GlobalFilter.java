@@ -26,12 +26,13 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
 
     @Override
     public GatewayFilter apply(Config config) {
-
         return (exchange, chain) -> {
 //            logger.info("GlobalFilter baseMessage>>>>>>" + config.getBaseMessage());
             if (config.isPreLogger()) {
                 logger.info("GlobalFilter Start>>>>>>" + exchange.getRequest());
             }
+
+
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
                 if (config.isPostLogger()) {
                     logger.info("GlobalFilter End>>>>>>" + exchange.getResponse());

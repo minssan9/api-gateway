@@ -37,11 +37,12 @@ public class ExceptionHandlerAdvice {
 //    }
 
     @ExceptionHandler(NullPointerException.class)
-    public Map<String, Object> nullEx(Exception e) {
-        log.warn("null ex" + e.getClass());
-        Map<String, Object> map = new HashMap<>();
-        map.put("errorCode", 61);
-        return map;
+    public ResponseEntity<ExceptionResponse> nullException(Exception e) {
+        log.error(e.getMessage(), e);
+        final ExceptionResponse response = new ExceptionResponse(
+                CommonExceptionType.INTERNAL_SERVER_ERROR, e);
+
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(Exception.class)
