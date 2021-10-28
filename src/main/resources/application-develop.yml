@@ -2,9 +2,9 @@
 ---
 server:
   db:
-    redis:
-      host: 10.20.101.99
-      port: 6379
+#    redis:
+#      host: 10.20.101.99
+#      port: 6379
   api:
     erp: http://10.20.101.99:34000
     auth: http://10.20.101.99:34009
@@ -14,9 +14,9 @@ server:
 #    bms: http://10.20.101.99:34009
 
 spring:
-  redis:
-    host: ${server.db.redis.host}
-    port: ${server.db.redis.port}
+#  redis:
+#    host: ${server.db.redis.host}
+#    port: ${server.db.redis.port}
   application:
     name: apigateway-develop
   cloud:
@@ -30,6 +30,7 @@ spring:
           filters:
             - RewritePath=/api/erp/(?<segment>.*), /$\{segment}
             - ERPFilter
+
         - id: api-auth
           uri: ${server.api.auth}
           predicates:
@@ -40,6 +41,7 @@ spring:
             - RewritePath=/api/auth/(?<segment>.*), /$\{segment}
 #            - AddRequestHeader=second-request, second-request-header2
 #            - AddResponseHeader=second-response, second-response-header2
+
         - id: api-homs
           uri: ${server.api.homs}
           predicates:
@@ -47,6 +49,7 @@ spring:
             - Method=POST, GET, PUT, DELETE
           filters:
             - RewritePath=/api/homs/(?<segment>.*), /$\{segment}
+            - HOMSFilter
 management:
   endpoints:
     web:
