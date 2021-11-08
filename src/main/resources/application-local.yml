@@ -10,6 +10,9 @@ server:
     auth: http://localhost:34009
     homs: http://localhost:8080
     adm: http://localhost:80
+    mdm: http://localhost:80
+    bms: http://localhost:80
+    vms: http://localhost:80
 
 #    wms: http://localhost:34009
 #    bms: http://localhost:34009
@@ -56,6 +59,30 @@ spring:
             - Method=POST, GET, PUT, DELETE
           filters:
             - RewritePath=/api/adm/(?<segment>.*), /adm/$\{segment}
+# mdm service
+        - id: api-mdm
+          uri: ${server.api.mdm}
+          predicates:
+            - Path=/api/mdm/**
+            - Method=POST, GET, PUT, DELETE
+          filters:
+            - RewritePath=/api/mdm/(?<segment>.*), /mdm/$\{segment}
+# bms service
+        - id: api-bms
+          uri: ${server.api.bms}
+          predicates:
+            - Path=/api/bms/**
+            - Method=POST, GET, PUT, DELETE
+          filters:
+            - RewritePath=/api/bms/(?<segment>.*), /bms/$\{segment}
+# vms service
+        - id: api-vms
+          uri: ${server.api.vms}
+          predicates:
+            - Path=/api/vms/**
+            - Method=POST, GET, PUT, DELETE
+          filters:
+            - RewritePath=/api/vms/(?<segment>.*), /vms/$\{segment}
 management:
   endpoints:
     web:
