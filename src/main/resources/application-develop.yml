@@ -9,6 +9,10 @@ server:
     erp: http://10.20.101.99:34000
     auth: http://10.20.101.99:34009
     homs: http://10.20.101.171:8080
+    adm: http://10.20.101.171:18081
+    mdm: http://10.20.101.171:18082
+    bms: http://10.20.101.171:18083
+    vms: http://10.20.101.171:18084
 
 #    wms: http://10.20.101.99:34009
 #    bms: http://10.20.101.99:34009
@@ -50,6 +54,38 @@ spring:
           filters:
             - RewritePath=/api/homs/(?<segment>.*), /$\{segment}
 #            - HOMSFilter
+# adm service
+        - id: api-adm
+          uri: ${server.api.adm}
+          predicates:
+            - Path=/api/adm/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS
+          filters:
+            - RewritePath=/api/adm/(?<segment>.*), /adm/$\{segment}
+# mdm service
+        - id: api-mdm
+          uri: ${server.api.mdm}
+          predicates:
+            - Path=/api/mdm/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS
+          filters:
+            - RewritePath=/api/mdm/(?<segment>.*), /mdm/$\{segment}
+# bms service
+        - id: api-bms
+          uri: ${server.api.bms}
+          predicates:
+            - Path=/api/bms/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS
+          filters:
+            - RewritePath=/api/bms/(?<segment>.*), /bms/$\{segment}
+# vms service
+        - id: api-vms
+          uri: ${server.api.vms}
+          predicates:
+            - Path=/api/vms/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS
+          filters:
+            - RewritePath=/api/vms/(?<segment>.*), /vms/$\{segment}
 management:
   endpoints:
     web:
