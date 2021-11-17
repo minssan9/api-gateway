@@ -59,7 +59,7 @@ spring:
           uri: ${server.api.adm}
           predicates:
             - Path=/api/adm/**
-            - Method=POST, GET, PUT, DELETE
+            - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
             - RewritePath=/api/adm/(?<segment>.*), /adm/$\{segment}
 # mdm service
@@ -67,7 +67,7 @@ spring:
           uri: ${server.api.mdm}
           predicates:
             - Path=/api/mdm/**
-            - Method=POST, GET, PUT, DELETE
+            - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
             - RewritePath=/api/mdm/(?<segment>.*), /mdm/$\{segment}
 # bms service
@@ -75,7 +75,7 @@ spring:
           uri: ${server.api.bms}
           predicates:
             - Path=/api/bms/**
-            - Method=POST, GET, PUT, DELETE
+            - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
             - RewritePath=/api/bms/(?<segment>.*), /bms/$\{segment}
 # vms service
@@ -83,7 +83,7 @@ spring:
           uri: ${server.api.vms}
           predicates:
             - Path=/api/vms/**
-            - Method=POST, GET, PUT, DELETE
+            - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
             - RewritePath=/api/vms/(?<segment>.*), /vms/$\{segment}
 management:

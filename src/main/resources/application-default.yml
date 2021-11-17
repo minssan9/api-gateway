@@ -11,6 +11,7 @@ spring:
           '[/**]':
             allowedOrigins: "*"
             allowedHeaders:
+              - $systemver
               - x-requested-with
               - authorization
               - content-type
