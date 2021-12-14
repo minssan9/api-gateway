@@ -2,11 +2,13 @@ node {
     //git_branch = sed -i 's|origin/|'"${params.GIT_BRANCH}"'|'
     stage("Parameter Check") {
         echo 'Start'
-        echo "${env.JOB_NAME}"
-        echo "${params.GIT_BRANCH}"
+        echo "env.JOB_NAME - ${env.JOB_NAME}"
+        echo "env.gitlabBranch - ${env.gitlabBranch}"
         echo "params.GIT_BRANCH - ${params.GIT_BRANCH}"
 
         git_branch = "${env.gitlabBranch.replace("origin/", "")}"
+
+        echo "build with this branch : ${git_branch}"
     }
     stage ('Clone'){
         git branch: "${git_branch}", credentialsId: 'gitlab_deploy', url: 'http://10.20.101.172:8111/hds_api/hds_api_gateway.git'
