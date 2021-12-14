@@ -79,7 +79,7 @@ spring:
 # vms service
         - id: api-vms
           uri: ${server.api.vms}
-          predicates:x
+          predicates:
             - Path=/api/vms/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
