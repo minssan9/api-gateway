@@ -26,8 +26,10 @@ repositories {
 
 ext {
     projectGroup = 'com.hallahds'
-    lombokVersion = '1.18.18'
     springCloudVersion = "2020.0.2"
+
+    lombokVersion = '1.18.18'
+    log4jVersion = '2.15.0'
     projectVersion = '0.1.0-' + new Date().format('yyyyMMddHHmmss')
 }
 
@@ -59,6 +61,14 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'com.google.code.gson:gson'
 
+
+    implementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
+    implementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
+    implementation "org.apache.logging.log4j:log4j-jul:${log4jVersion}"
+    implementation "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
+    implementation 'org.slf4j:slf4j-api:1.7.32'
+    implementation 'org.slf4j:jul-to-slf4j:1.7.32'
+
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
@@ -66,4 +76,9 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+configurations {
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
 }
