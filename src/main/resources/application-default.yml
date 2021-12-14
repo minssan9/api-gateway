@@ -24,6 +24,7 @@ spring:
               - PUT
               - OPTIONS
               - DELETE
+            maxAge: 1728000
       default-filters:
         - name: GlobalFilter
           args:
