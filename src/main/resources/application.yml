@@ -1,8 +1,7 @@
----
 spring:
   profiles:
     group:
-      "local": "local, default"
+      "local" : "localhost, default"
 ---
 spring:
   profiles:
@@ -12,4 +11,4 @@ spring:
 spring:
   profiles:
     group:
-      "release": "release, default"
+      "release" : "release, default"

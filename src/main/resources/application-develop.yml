@@ -6,7 +6,7 @@ server:
 #      host: 10.20.101.99
 #      port: 6379
   api:
-    erp: http://10.20.101.99:34000
+    intf: http://10.20.101.99:34000
     auth: http://10.20.101.99:34009
     homs: http://10.20.101.171:8080
     adm: http://10.20.101.171:18081
@@ -14,8 +14,6 @@ server:
     bms: http://10.20.101.171:18083
     vms: http://10.20.101.171:18084
 
-#    wms: http://10.20.101.99:34009
-#    bms: http://10.20.101.99:34009
 
 spring:
 #  redis:
@@ -26,13 +24,13 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: api-erp
-          uri: ${server.api.erp}
+        - id: api-intf
+          uri: ${server.api.intf}
           predicates:
-            - Path=/api/erp/**
+            - Path=/api/intf/**
             - Method=POST, GET, PUT, DELETE
           filters:
-            - RewritePath=/api/erp/(?<segment>.*), /$\{segment}
+            - RewritePath=/api/intf/(?<segment>.*), /$\{segment}
             - ERPFilter
 
         - id: api-auth
@@ -81,7 +79,7 @@ spring:
 # vms service
         - id: api-vms
           uri: ${server.api.vms}
-          predicates:
+          predicates:x
             - Path=/api/vms/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
@@ -95,3 +93,12 @@ management:
   endpoint:
     gateway:
       enabled: true
+
+#eureka:
+#  instance:
+#    hostname: 10.20.101.99
+#  client:
+#    fetch-registry: false
+#    register-with-eureka: false
+#    service-url:
+#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka

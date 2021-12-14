@@ -1,12 +1,14 @@
 #  develop
 ---
 server:
+  port: 31000
   db:
-    redis:
-      host: 10.20.101.99
-      port: 6379
+#    redis:
+#      host: 10.20.101.99
+#      port: 6379
   api:
-    erp: http://localhost:34000
+    intf: http://localhost:34000
+    intf2: http://localhost:34001
     auth: http://localhost:34009
     homs: http://localhost:8080
     adm: http://localhost:80
@@ -18,21 +20,31 @@ server:
 #    bms: http://localhost:34009
 
 spring:
-  redis:
-    host: ${server.db.redis.host}
-    port: ${server.db.redis.port}
+#  redis:
+#    host: ${server.db.redis.host}
+#    port: ${server.db.redis.port}
   application:
-    name: apigateway-develop
+    name: apigateway-local
   cloud:
     gateway:
       routes:
-        - id: api-erp
-          uri: ${server.api.erp}
+        - id: api-intf
+          uri: ${server.api.intf}
           predicates:
-            - Path=/api/erp/**
-            - Method=POST, GET, PUT, DELETE
+            - Path=/api/intf/**
+            - Method=POST, GET
+            - Weight=group_intf, 8
           filters:
-            - RewritePath=/api/erp/(?<segment>.*), /$\{segment}
+            - RewritePath=/api/intf/(?<segment>.*), /$\{segment}
+            - ERPFilter
+        - id: api-intf2
+          uri: ${server.api.intf2}
+          predicates:
+            - Path=/api/intf/**
+            - Method=POST, GET
+            - Weight=group_intf, 2
+          filters:
+            - RewritePath=/api/intf/(?<segment>.*), /$\{segment}
             - ERPFilter
         - id: api-auth
           uri: ${server.api.auth}
@@ -84,6 +96,30 @@ spring:
             - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
             - RewritePath=/api/vms/(?<segment>.*), /vms/$\{segment}
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders:
+              - $systemver
+              - x-requested-with
+              - authorization
+              - content-type
+              - credential
+              - X-AUTH-TOKEN
+              - X-CSRF-TOKEN
+            allowedMethods:
+              - POST
+              - GET
+              - PUT
+              - OPTIONS
+              - DELETE
+      default-filters:
+        - name: GlobalFilter
+          args:
+            baseMessage: Gateway GlobalFilter
+            preLogger: true
+            postLogger: true
 management:
   endpoints:
     web:
@@ -93,3 +129,12 @@ management:
   endpoint:
     gateway:
       enabled: true
+
+#eureka:
+#  instance:
+#    hostname: localhost
+#  client:
+#    fetch-registry: false
+#    register-with-eureka: false
+#    service-url:
+#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka

@@ -22,6 +22,8 @@ bootJar {
 repositories {
     mavenCentral()
     maven { url "https://www.datanucleus.org/downloads/maven2/"}
+    maven { url "https://repo.spring.io/milestone"}
+    maven { url "https://repo.spring.io/snapshot"}
 }
 
 ext {
@@ -41,6 +43,7 @@ dependencyManagement {
 
 dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+//    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
