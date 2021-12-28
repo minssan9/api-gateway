@@ -3,9 +3,10 @@ node {
     git_branch = "${params.GIT_BRANCH.replace("origin/", "")}"
     stage("Parameter Check") {
         echo 'Start'
-        echo "${env.JOB_NAME}"
-        echo "${params.GIT_BRANCH}"
-        echo "${git_branch}"
+        echo "env.JOB_NAME - ${env.JOB_NAME}"
+        echo "env.gitlabBranch - ${env.gitlabBranch}"
+        echo "env.gitlabSourceBranch - ${env.gitlabSourceBranch}"
+        echo "params.GIT_BRANCH - ${params.GIT_BRANCH}"
 
     }
     stage ('Clone'){
