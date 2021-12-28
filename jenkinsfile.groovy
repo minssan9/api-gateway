@@ -17,14 +17,8 @@ node {
     }
 
     stage("Staging") {
-        // sh "pid=\$(lsof -i:8989 -t); kill -TERM \$pid "
-        //   + "|| kill -KILL \$pid"
-        // withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
-        //     sh 'nohup ./mvnw spring-boot:run -Dserver.port=8989 &'
-        // }
-        sh "docker build -t hds_api_gateway:${BUILD_NUMBER} ."
-        sh "docker tag hds_api_gateway:${BUILD_NUMBER} 10.20.101.172:5000/hds_api_gateway"
-        sh "docker push 10.20.101.172:5000/hds_api_gateway"
+        sh "docker build -t 10.20.101.172:5000/hds_api_gateway_${git_branch}:${BUILD_NUMBER} ."
+        sh "docker push 10.20.101.172:5000/hds_api_gateway_${git_branch}"
 
         try {
             // develop redeploy
@@ -46,7 +40,7 @@ node {
             -X POST \
             -H "Accept: application/json" \
             -H "Content-Type: application/json" \
-            "https://10.20.101.172/v3/project/c-hf5s6:p-qf444/workloads/daemonset:hds-web:hds-api-gateway-${git_branch}?action=redeploy" --insecure
+            "https://10.20.101.172/v3/project/c-5n4wx:p-l6bnp/workloads/deployment:api:hds-api-gateway-${git_branch}?action=redeploy" --insecure
             """
         } catch (e) {
             sh 'echo develop deploy Fail!!'

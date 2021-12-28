@@ -31,6 +31,8 @@ spring:
             baseMessage: Gateway GlobalFilter
             preLogger: true
             postLogger: true
+      httpclient:
+        max-header-size: 52428800
 
 #  redis:
 #    jedis.pool.max-active: 10000
