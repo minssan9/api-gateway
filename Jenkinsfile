@@ -17,7 +17,8 @@ node {
     }
 
     stage("Staging") {
-        sh "docker build -t 10.20.101.172:5000/hds_api_gateway_${git_branch}:${BUILD_NUMBER} ."
+        echo "docker build -t 10.20.101.172:5000/hds_api_gateway_${git_branch} . "   // :${BUILD_NUMBER}
+        sh "docker build -t 10.20.101.172:5000/hds_api_gateway_${git_branch} ."
         sh "docker push 10.20.101.172:5000/hds_api_gateway_${git_branch}"
 
         try {
