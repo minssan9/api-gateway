@@ -1,6 +1,6 @@
 node {
     //git_branch = sed -i 's|origin/|'"${params.GIT_BRANCH}"'|'
-    git_branch = "${params.GIT_BRANCH.replace("origin/", "")}"
+    git_branch = "${env.gitlabBranch.replace("origin/", "")}"
     stage("Parameter Check") {
         echo 'Start'
         echo "env.JOB_NAME - ${env.JOB_NAME}"
