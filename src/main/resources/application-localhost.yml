@@ -1,4 +1,4 @@
-#  develop
+#  local
 ---
 server:
   port: 31000
@@ -16,110 +16,12 @@ server:
     bms: http://localhost:80
     vms: http://localhost:80
 
-#    wms: http://localhost:34009
-#    bms: http://localhost:34009
-
 spring:
 #  redis:
 #    host: ${server.db.redis.host}
 #    port: ${server.db.redis.port}
   application:
     name: apigateway-local
-  cloud:
-    gateway:
-      routes:
-        - id: api-intf
-          uri: ${server.api.intf}
-          predicates:
-            - Path=/api/intf/**
-            - Method=POST, GET
-            - Weight=group_intf, 8
-          filters:
-            - RewritePath=/api/intf/(?<segment>.*), /$\{segment}
-            - ERPFilter
-        - id: api-intf2
-          uri: ${server.api.intf2}
-          predicates:
-            - Path=/api/intf/**
-            - Method=POST, GET
-            - Weight=group_intf, 2
-          filters:
-            - RewritePath=/api/intf/(?<segment>.*), /$\{segment}
-            - ERPFilter
-        - id: api-auth
-          uri: ${server.api.auth}
-          predicates:
-            - Path=/api/auth/**
-            - Method=POST, GET
-          filters:
-#            - RemoveRequestHeader=Cookie
-            - RewritePath=/api/auth/(?<segment>.*), /$\{segment}
-#            - AddRequestHeader=second-request, second-request-header2
-#            - AddResponseHeader=second-response, second-response-header2
-        - id: api-homs
-          uri: ${server.api.homs}
-          predicates:
-            - Path=/api/homs/**
-            - Method=POST, GET, PUT, DELETE
-          filters:
-            - RewritePath=/api/homs/(?<segment>.*), /$\{segment}
-# adm service
-        - id: api-adm
-          uri: ${server.api.adm}
-          predicates:
-            - Path=/api/adm/**
-            - Method=POST, GET, PUT, DELETE, OPTIONS
-          filters:
-            - RewritePath=/api/adm/(?<segment>.*), /adm/$\{segment}
-            - GlobalFilter
-# mdm service
-        - id: api-mdm
-          uri: ${server.api.mdm}
-          predicates:
-            - Path=/api/mdm/**
-            - Method=POST, GET, PUT, DELETE, OPTIONS
-          filters:
-            - RewritePath=/api/mdm/(?<segment>.*), /mdm/$\{segment}
-# bms service
-        - id: api-bms
-          uri: ${server.api.bms}
-          predicates:
-            - Path=/api/bms/**
-            - Method=POST, GET, PUT, DELETE, OPTIONS
-          filters:
-            - RewritePath=/api/bms/(?<segment>.*), /bms/$\{segment}
-# vms service
-        - id: api-vms
-          uri: ${server.api.vms}
-          predicates:
-            - Path=/api/vms/**
-            - Method=POST, GET, PUT, DELETE, OPTIONS
-          filters:
-            - RewritePath=/api/vms/(?<segment>.*), /vms/$\{segment}
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins: "*"
-            allowedHeaders:
-              - $systemver
-              - x-requested-with
-              - authorization
-              - content-type
-              - credential
-              - X-AUTH-TOKEN
-              - X-CSRF-TOKEN
-            allowedMethods:
-              - POST
-              - GET
-              - PUT
-              - OPTIONS
-              - DELETE
-      default-filters:
-        - name: GlobalFilter
-          args:
-            baseMessage: Gateway GlobalFilter
-            preLogger: true
-            postLogger: true
 management:
   endpoints:
     web:

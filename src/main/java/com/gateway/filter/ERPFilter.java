@@ -31,19 +31,15 @@ public class ERPFilter extends AbstractGatewayFilterFactory<Config> {
     @Override
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
-            logger.info("ERPFilter baseMessage>>>>>>" + config.getBaseMessage());
+//            logger.info("ERPFilter baseMessage>>>>>>" + config.getBaseMessage());
             if (config.isPreLogger()) {
                 logger.info("ERPFilter Start>>>>>>" + exchange.getRequest());
             }
-
-
-//            Access Token 있는지 확인
+            //            Access Token 있는지 확인
 //            String accessToken = exchange.getRequest().getHeaders().get("Authorization").toString();
 //            if ( jwtValidator.getClaimsFromJWT(accessToken).isEmpty()) {
 //                throw new CommonException(CommonExceptionType.TOKEN_EXPIRED);
-//            };
-
-
+//            }
 
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
                 if (config.isPostLogger()) {

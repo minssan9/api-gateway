@@ -27,15 +27,16 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
-//            logger.info("GlobalFilter baseMessage>>>>>>" + config.getBaseMessage());
             if (config.isPreLogger()) {
-                logger.info("GlobalFilter Start>>>>>>" + exchange.getRequest());
+                logger.info("GlobalFilter Start>>>>>>" + exchange.getRequest().getURI());
+                logger.info("GlobalFilter Start>>>>>>" + exchange.getRequest().getPath());
+                logger.info("GlobalFilter Start>>>>>>" + exchange.getRequest().getQueryParams());
             }
 
 
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
                 if (config.isPostLogger()) {
-                    logger.info("GlobalFilter End>>>>>>" + exchange.getResponse());
+                    logger.info("GlobalFilter End>>>>>>" + exchange.getResponse().getStatusCode());
                 }
             }));
         };
