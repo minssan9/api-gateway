@@ -1,11 +1,12 @@
 node {
     //git_branch = sed -i 's|origin/|'"${params.GIT_BRANCH}"'|'
-    git_branch = "${params.GIT_BRANCH.replace("origin/", "")}"
+    git_branch = "${env.gitlabBranch.replace("origin/", "")}"
     stage("Parameter Check") {
         echo 'Start'
-        echo "${env.JOB_NAME}"
-        echo "${params.GIT_BRANCH}"
-        echo "${git_branch}"
+        echo "env.JOB_NAME - ${env.JOB_NAME}"
+        echo "env.gitlabBranch - ${env.gitlabBranch}"
+        echo "env.gitlabSourceBranch - ${env.gitlabSourceBranch}"
+        echo "params.GIT_BRANCH - ${params.GIT_BRANCH}"
 
     }
     stage ('Clone'){
@@ -17,7 +18,8 @@ node {
     }
 
     stage("Staging") {
-        sh "docker build -t 10.20.101.172:5000/hds_api_gateway_${git_branch}:${BUILD_NUMBER} ."
+        echo "docker build -t 10.20.101.172:5000/hds_api_gateway_${git_branch} . "   // :${BUILD_NUMBER}
+        sh "docker build -t 10.20.101.172:5000/hds_api_gateway_${git_branch} ."
         sh "docker push 10.20.101.172:5000/hds_api_gateway_${git_branch}"
 
         try {

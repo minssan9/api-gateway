@@ -1,11 +1,91 @@
 server:
   port: 31000
 
+manamanagement:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "gateway"
+  endpoint:
+    gateway:
+      enabled: true
+
 spring:
   main:
     allow-bean-definition-overriding: true
   cloud:
     gateway:
+      routes:
+        - id: api-intf
+          uri: ${server.api.intf}
+          predicates:
+            - Path=/api/intf/**
+            - Method=POST, GET, PUT
+            - Weight=group_intf, 10
+          filters:
+            - RewritePath=/api/intf/(?<segment>.*), /$\{segment}
+            - ERPFilter
+#        - id: api-intf2
+#          uri: ${server.api.intf2}
+#          predicates:
+#            - Path=/api/intf/**
+#            - Method=POST, GET
+#            - Weight=group_intf, 2,
+#          filters:
+#            - RewritePath=/api/intf/(?<segment>.*), /$\{segment}
+#            - ERPFilter
+        - id: api-auth
+          uri: ${server.api.auth}
+          predicates:
+            - Path=/api/auth/**
+            - Method=POST, GET
+          filters:
+            #            - RemoveRequestHeader=Cookie
+            - RewritePath=/api/auth/(?<segment>.*), /$\{segment}
+        #            - AddRequestHeader=second-request, second-request-header2
+        #            - AddResponseHeader=second-response, second-response-header2
+        - id: api-homs
+          uri: ${server.api.homs}
+          predicates:
+            - Path=/api/homs/**
+            - Method=POST, GET, PUT, DELETE
+          filters:
+            - RewritePath=/api/homs/(?<segment>.*), /$\{segment}
+        # adm service
+        - id: api-adm
+          uri: ${server.api.adm}
+          predicates:
+            - Path=/api/adm/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS
+          filters:
+            - RewritePath=/api/adm/(?<segment>.*), /adm/$\{segment}
+            - GlobalFilter
+        # mdm service
+        - id: api-mdm
+          uri: ${server.api.mdm}
+          predicates:
+            - Path=/api/mdm/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS
+          filters:
+            - RewritePath=/api/mdm/(?<segment>.*), /mdm/$\{segment}
+        # bms service
+        - id: api-bms
+          uri: ${server.api.bms}
+          predicates:
+            - Path=/api/bms/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS
+          filters:
+            - RewritePath=/api/bms/(?<segment>.*), /bms/$\{segment}
+        # vms service
+        - id: api-vms
+          uri: ${server.api.vms}
+          predicates:
+            - Path=/api/vms/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS
+          filters:
+            - RewritePath=/api/vms/(?<segment>.*), /vms/$\{segment}
+
       globalcors:
         corsConfigurations:
           '[/**]':
@@ -47,18 +127,11 @@ secret:
     key: hallahdstest
 
 ##################################################################################################################
-# LOG4JDBC 관련
+# LOG4J 관련
 ##################################################################################################################
 logging:
   level:
-    #    jdbc: DEBUG
-    #      connection: OFF      #      #커넥션 open close 이벤트를 로그로 남긴다
-    #      sqlonly: OFF         #      #SQL문만을 로그로 남기며, PreparedStatement일 경우 관련된 argument 값으로 대체된 SQL문이 보여진다.
-    #      sqltiming: DEBUG     #      #SQL문과 해당 SQL을 실행시키는데 수행된 시간 정보(milliseconds)를 포함한다.
-    #      audit: OFF           #      #ResultSet을 제외한 모든 JDBC 호출 정보를 로그로 남긴다. 많은 양의 로그가 생성되므로 특별히 JDBC 문제를 추적해야 할 필요가 있는 경우를 제외하고는 사용을 권장하지 않는다.
-    #      resultset: OFF       #      #ResultSet을 포함한 모든 JDBC 호출 정보를 로그로 남기므로 매우 방대한 양의 로그가 생성된다.
     sql: error
-    p6psy.p6spy: info
     root: info
   pattern:
     file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
@@ -68,3 +141,12 @@ logging:
       clean-history-on-start: false
       max-file-size: 500MB
       max-history: 10
+
+#eureka:
+#  instance:
+#    hostname: 10.20.101.99
+#  client:
+#    fetch-registry: false
+#    register-with-eureka: false
+#    service-url:
+#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka
