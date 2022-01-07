@@ -1,19 +1,16 @@
 package com.gateway.filter;
 
-import com.gateway.account.repository.TokenInfoRepository;
-import com.gateway.config.exception.CommonException;
-import com.gateway.config.exception.CommonExceptionType;
-import com.gateway.filter.GlobalFilter.Config;
-import com.gateway.account.service.JwtValidator;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import lombok.Data;
+import java.util.Arrays;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.stereotype.Component;
+
+import com.gateway.filter.GlobalFilter.Config;
+
+import lombok.Data;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -31,7 +28,7 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
             if (config.isPreLogger()) {
                 logger.info("GlobalFilter Start>>>>>>" + exchange.getRequest());
             }
-
+        	exchange.getResponse().getHeaders().setAccessControlExposeHeaders(Arrays.asList("content-disposition"));
 
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
                 if (config.isPostLogger()) {
