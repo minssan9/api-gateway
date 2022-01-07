@@ -29,7 +29,6 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
                 logger.info("GlobalFilter Start>>>>>>" + exchange.getRequest());
             }
         	exchange.getResponse().getHeaders().setAccessControlExposeHeaders(Arrays.asList("content-disposition"));
-
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
                 if (config.isPostLogger()) {
                     logger.info("GlobalFilter End>>>>>>" + exchange.getResponse());
