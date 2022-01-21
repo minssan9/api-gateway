@@ -24,12 +24,6 @@ public class NettyConfiguration
     @Override
     public void customize(NettyReactiveWebServerFactory factory) {
     	log.info("maxHttpHeaderSize : " + maxInBytes);
-        factory.addServerCustomizers(
-                server -> server.httpRequestDecoder(
-                        reqDecorator -> reqDecorator
-                                .maxInitialLineLength(maxInBytes)
-                                .maxHeaderSize(maxInBytes)
-                )
-        );
+//        factory.addServerCustomizers();
     }
 }

@@ -2,10 +2,6 @@
 ---
 server:
   port: 31000
-  db:
-#    redis:
-#      host: 10.20.101.99
-#      port: 6379
   api:
     intf: http://localhost:34000
     intf2: http://localhost:34001
@@ -17,20 +13,8 @@ server:
     vms: http://localhost:80
 
 spring:
-#  redis:
-#    host: ${server.db.redis.host}
-#    port: ${server.db.redis.port}
   application:
     name: apigateway-local
-management:
-  endpoints:
-    web:
-      exposure:
-        include:
-          - "gateway"
-  endpoint:
-    gateway:
-      enabled: true
 
 #eureka:
 #  instance:
