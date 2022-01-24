@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RequestMapping;
 import reactor.core.publisher.Mono;
 
-@EnableEurekaServer
 @SpringBootApplication(scanBasePackages = {"com.gateway"})
 public class GatewayApplication {
 
