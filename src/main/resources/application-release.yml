@@ -9,8 +9,14 @@ server:
     intf: http://10.20.101.99:34000
     auth: http://10.20.101.134:34009
     homs: http://10.20.101.197:8081
-#    wms: http://10.20.101.99:34009
-#    bms: http://10.20.101.99:34009
+#    adm: http://10.20.101.171:18081
+#    mdm: http://10.20.101.171:18082
+#    bms: http://10.20.101.171:18083
+#    vms: http://10.20.101.171:18084
+    adm: lb://ADM-SERVICE
+    mdm: lb://MDM-SERVICE
+    bms: lb://BMS-SERVICE
+    vms: lb://VMS-SERVICE
 
 spring:
 #  redis:
