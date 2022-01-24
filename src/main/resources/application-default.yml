@@ -1,19 +1,25 @@
 server:
-  port: 31000
+  port: 30000
+  ssl:
+    enabled: false
 
 eureka:
-  server:
-    enable-self-preservation: false
-  instance:
-    hostname: 10.20.11.101
-    leaseRenewalIntervalInSeconds: 5
-    leaseExpirationDurationInSeconds: 10
+#  server:
+#    enable-self-preservation: false
+#  instance:
+#    hostname: 10.20.11.101
+#    leaseRenewalIntervalInSeconds: 5
+#    leaseExpirationDurationInSeconds: 10
+#    nonSecurePortEnabled: true
   client:
     registryFetchIntervalSeconds: 5
-    fetch-registry: false
-    register-with-eureka: false
+#    fetch-registry: false
+#    register-with-eureka: false
+    fetch-registry: true
+    register-with-eureka: true
     service-url:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://${eureka.instance.hostname}:31000/eureka/
 
 
 spring:
@@ -21,42 +27,27 @@ spring:
     allow-bean-definition-overriding: true
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true
       routes:
         - id: api-intf
-          uri: ${server.api.intf}
+#          uri: ${server.api.intf}
+          uri: http://10.20.11.101:34000
           predicates:
             - Path=/api/intf/**
             - Method=POST, GET, PUT
-            - Weight=group_intf, 10
+#            - Weight=group_intf, 10
           filters:
-            - RewritePath=/api/intf/(?<segment>.*), /$\{segment}
+            - RewritePath=/api/intf/?(?<segment>.*), /$\{segment}
             - ERPFilter
-#        - id: api-intf2
-#          uri: ${server.api.intf2}
-#          predicates:
-#            - Path=/api/intf/**
-#            - Method=POST, GET
-#            - Weight=group_intf, 2,
-#          filters:
-#            - RewritePath=/api/intf/(?<segment>.*), /$\{segment}
-#            - ERPFilter
-        - id: api-auth
-          uri: ${server.api.auth}
-          predicates:
-            - Path=/api/auth/**
-            - Method=POST, GET
-          filters:
-            #            - RemoveRequestHeader=Cookie
-            - RewritePath=/api/auth/(?<segment>.*), /$\{segment}
-        #            - AddRequestHeader=second-request, second-request-header2
-        #            - AddResponseHeader=second-response, second-response-header2
         - id: api-homs
           uri: ${server.api.homs}
           predicates:
             - Path=/api/homs/**
             - Method=POST, GET, PUT, DELETE
           filters:
-            - RewritePath=/api/homs/(?<segment>.*), /$\{segment}
+            - RewritePath=/api/homs/?(?<segment>.*), /$\{segment}
         # adm service
         - id: api-adm
           uri: ${server.api.adm}
@@ -64,7 +55,7 @@ spring:
             - Path=/api/adm/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
-            - RewritePath=/api/adm/(?<segment>.*), /adm/$\{segment}
+            - RewritePath=/api/adm/?(?<segment>.*), /adm/$\{segment}
             - GlobalFilter
         # mdm service
         - id: api-mdm
@@ -73,7 +64,7 @@ spring:
             - Path=/api/mdm/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
-            - RewritePath=/api/mdm/(?<segment>.*), /mdm/$\{segment}
+            - RewritePath=/api/mdm/?(?<segment>.*), /mdm/$\{segment}
         # bms service
         - id: api-bms
           uri: ${server.api.bms}
@@ -81,7 +72,7 @@ spring:
             - Path=/api/bms/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
-            - RewritePath=/api/bms/(?<segment>.*), /bms/$\{segment}
+            - RewritePath=/api/bms/?(?<segment>.*), /bms/$\{segment}
         # vms service
         - id: api-vms
           uri: ${server.api.vms}
@@ -89,7 +80,7 @@ spring:
             - Path=/api/vms/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
-            - RewritePath=/api/vms/(?<segment>.*), /vms/$\{segment}
+            - RewritePath=/api/vms/?(?<segment>.*), /vms/$\{segment}
 
       globalcors:
         corsConfigurations:

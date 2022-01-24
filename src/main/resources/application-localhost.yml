@@ -1,7 +1,6 @@
 #  local
 ---
 server:
-  port: 31000
   api:
     intf: http://localhost:34000
     intf2: http://localhost:34001
