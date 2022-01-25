@@ -2,24 +2,25 @@
 ---
 server:
   api:
-    intf: http://localhost:34000
-    intf2: http://localhost:34001
-    auth: http://localhost:34009
+#    intf: http://localhost:34000
+    intf: lb://HALLAHDS_API
     homs: http://localhost:8080
-    adm: http://localhost:80
-    mdm: http://localhost:80
-    bms: http://localhost:80
-    vms: http://localhost:80
+    adm: http://10.20.101.171:18081
+    #    adm: lb://ADM-SERVICE
+    mdm: http://10.20.101.171:18082
+    #    mdm: lb://MDM-SERVICE
+    bms: http://10.20.101.171:18083
+    #    bms: lb://BMS-SERVICE
+    vms: http://10.20.101.171:18084
 
 spring:
   application:
     name: apigateway-local
 
-#eureka:
-#  instance:
-#    hostname: localhost
-#  client:
-#    fetch-registry: false
-#    register-with-eureka: false
-#    service-url:
-#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka
+eureka:
+  client:
+    registryFetchIntervalSeconds: 5
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

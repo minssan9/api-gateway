@@ -1,10 +1,6 @@
 #  release
 ---
 server:
-  db:
-#    redis:
-#      host: 10.20.101.134
-#      port: 6379
   api:
     intf: http://10.20.101.99:34000
     auth: http://10.20.101.134:34009
@@ -19,8 +15,13 @@ server:
     vms: lb://VMS-SERVICE
 
 spring:
-#  redis:
-#    host: ${server.db.redis.host}
-#    port: ${server.db.redis.port}
   application:
     name: apigateway-release
+
+eureka:
+  client:
+    registryFetchIntervalSeconds: 5
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://10.20.101.48:8761/eureka

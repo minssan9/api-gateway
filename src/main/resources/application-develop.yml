@@ -3,20 +3,21 @@
 server:
   api:
     intf: http://10.20.101.99:34000
-#    intf: http://10.20.11.101:34000
-#    intf: lb://HALLAHDS_API
     auth: http://10.20.101.99:34009
     homs: http://10.20.101.171:8080
     adm: http://10.20.101.171:18081
-    #    adm: lb://ADM-SERVICE
     mdm: http://10.20.101.171:18082
-    #    mdm: lb://MDM-SERVICE
     bms: http://10.20.101.171:18083
-    #    bms: lb://BMS-SERVICE
     vms: http://10.20.101.171:18084
-    #    vms: lb://VMS-SERVICE
-
 
 spring:
   application:
     name: apigateway-develop
+
+eureka:
+  client:
+    registryFetchIntervalSeconds: 5
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://10.20.101.99:8761/eureka

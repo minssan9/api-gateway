@@ -3,37 +3,19 @@ server:
   ssl:
     enabled: false
 
-eureka:
-#  server:
-#    enable-self-preservation: false
-#  instance:
-#    hostname: 10.20.11.101
-#    leaseRenewalIntervalInSeconds: 5
-#    leaseExpirationDurationInSeconds: 10
-#    nonSecurePortEnabled: true
-  client:
-    registryFetchIntervalSeconds: 5
-#    fetch-registry: false
-#    register-with-eureka: false
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-      defaultZone: http://${eureka.instance.hostname}:31000/eureka/
-
-
 spring:
   main:
     allow-bean-definition-overriding: true
   cloud:
+    circuitbreaker:
+      resilience4j:
+        enabled: true
     gateway:
-      discovery:
-        locator:
-          enabled: true
       routes:
+        # erp API service --------------------------------------------------#
         - id: api-intf
-#          uri: ${server.api.intf}
-          uri: http://10.20.11.101:34000
+          uri: ${server.api.intf}
+#          uri: lb://HALLAHDS-API-SERVICE
           predicates:
             - Path=/api/intf/**
             - Method=POST, GET, PUT
@@ -41,6 +23,7 @@ spring:
           filters:
             - RewritePath=/api/intf/?(?<segment>.*), /$\{segment}
             - ERPFilter
+        # homs service  --------------------------------------------------#
         - id: api-homs
           uri: ${server.api.homs}
           predicates:
@@ -48,34 +31,38 @@ spring:
             - Method=POST, GET, PUT, DELETE
           filters:
             - RewritePath=/api/homs/?(?<segment>.*), /$\{segment}
-        # adm service
+        # adm service --------------------------------------------------#
         - id: api-adm
           uri: ${server.api.adm}
+#          uri: lb://GLOW-ADM-SERVICE
           predicates:
             - Path=/api/adm/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
             - RewritePath=/api/adm/?(?<segment>.*), /adm/$\{segment}
             - GlobalFilter
-        # mdm service
+        # mdm service --------------------------------------------------#
         - id: api-mdm
           uri: ${server.api.mdm}
+          #    uri: lb://GLOW-MDM-SERVICE
           predicates:
             - Path=/api/mdm/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
             - RewritePath=/api/mdm/?(?<segment>.*), /mdm/$\{segment}
-        # bms service
+        # bms service --------------------------------------------------#
         - id: api-bms
           uri: ${server.api.bms}
+          #    uri: lb://GLOW-BMS-SERVICE
           predicates:
             - Path=/api/bms/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
             - RewritePath=/api/bms/?(?<segment>.*), /bms/$\{segment}
-        # vms service
+        # vms service --------------------------------------------------#
         - id: api-vms
           uri: ${server.api.vms}
+          #    uri: lb://GLOW-VMS-SERVICE
           predicates:
             - Path=/api/vms/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
@@ -110,12 +97,33 @@ spring:
       httpclient:
         max-header-size: 52428800
 
-#  redis:
-#    jedis.pool.max-active: 10000
-#    jedis.pool.max-idle: 50
-#    jedis.pool.max-wait: -1
-#    jedis.pool.min-idle: 0
-#    timeout: 1
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true # actuator를 통해 circuitbraker 상태를 확인하기 위해 설정
+        minimumNumberOfCalls: 5 # Circuit Breaker가 에러 비율 또 slow call 비율을 계산하기 전에 요구되는 최소한의 요청 수
+        failureRateThreshold: 50  # 에러 비율 (퍼센트)로 해당 값 이상으로 에러 발생시 서킷이 Open 된다.
+        waitDurationInOpenState: 10s  # 서킷의 상태가 Open에서 Half-open으로 변경되기 전에 Circuit Breaker가 기다리는 시간
+    instances:
+      testCircuitBreaker:
+        baseConfig: default
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      show-details: always # actuator에서 디테일한 정보들을 확인하기 위해 설정
+  health:
+    circuitbreakers:
+      enabled: true # actuator를 통해 circuitbraker 상태를 확인하기 위해 설정
+
 
 jwt.secret: hallahds
 secret:
