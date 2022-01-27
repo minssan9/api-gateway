@@ -20,6 +20,7 @@ public class AjpConfiguration {
 		TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
 		tomcat.addAdditionalTomcatConnectors(createAjpConnector());
 		return tomcat;
+
 	}
 
 	private Connector createAjpConnector() {
