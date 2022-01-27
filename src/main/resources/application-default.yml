@@ -3,6 +3,12 @@ server:
   ssl:
     enabled: false
 
+tomcat:
+  ajp:
+    protocol: AJP/1.3
+    port: 31009
+    enabled: true
+
 spring:
   main:
     allow-bean-definition-overriding: true
