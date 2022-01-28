@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import com.gateway.filter.GlobalFilter.Config;
@@ -29,6 +30,11 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
                 logger.info("GlobalFilter Start>>>>>>" + exchange.getRequest().getPath());
                 logger.info("GlobalFilter Start>>>>>>" + exchange.getRequest().getQueryParams());
             }
+
+            if(exchange.getRequest().getURI().getPath().equals("api/adm/intf/process/returnKey")){
+                exchange.getResponse().setStatusCode(HttpStatus.OK);
+            }
+
         	exchange.getResponse().getHeaders().setAccessControlExposeHeaders(Arrays.asList("content-disposition"));
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
                 if (config.isPostLogger()) {
