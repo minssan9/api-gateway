@@ -15,7 +15,6 @@ spring:
         # erp API service --------------------------------------------------#
         - id: api-intf
           uri: ${server.api.intf}
-#          uri: lb://HALLAHDS-API-SERVICE
           predicates:
             - Path=/api/intf/**
             - Method=POST, GET, PUT

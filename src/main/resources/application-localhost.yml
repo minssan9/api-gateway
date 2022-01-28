@@ -2,8 +2,7 @@
 ---
 server:
   api:
-#    intf: http://localhost:34000
-    intf: lb://HALLAHDS_API
+    intf: lb://HALLAHDS-API-SERVICE
     homs: http://localhost:8080
     adm: http://10.20.101.171:18081
     #    adm: lb://ADM-SERVICE
