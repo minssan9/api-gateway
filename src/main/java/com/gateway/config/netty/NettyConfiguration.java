@@ -1,5 +1,6 @@
 package com.gateway.config.netty;
 
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.core.Ordered;
@@ -24,6 +25,13 @@ public class NettyConfiguration
     @Override
     public void customize(NettyReactiveWebServerFactory factory) {
     	log.info("maxHttpHeaderSize : " + maxInBytes);
-//        factory.addServerCustomizers();
+
+        factory.addServerCustomizers(
+                server -> server.httpRequestDecoder(
+                        reqDecorator -> reqDecorator
+                                .maxInitialLineLength(maxInBytes)
+                                .maxHeaderSize(maxInBytes)
+                )
+        );
     }
 }
