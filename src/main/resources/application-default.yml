@@ -4,6 +4,8 @@ server:
     enabled: false
 
 spring:
+  application:
+    name: HALLAHDS-GATEWAY-SERVICE
   main:
     allow-bean-definition-overriding: true
   cloud:

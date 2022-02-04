@@ -9,10 +9,6 @@ server:
     bms: lb://HGLOW-BMS-SERVICE
     vms: lb://HGLOW-VMS-SERVICE
 
-spring:
-  application:
-    name: apigateway-release
-
 eureka:
   client:
     registryFetchIntervalSeconds: 5
