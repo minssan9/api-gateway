@@ -31,10 +31,6 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
                 logger.info("GlobalFilter Start>>>>>>" + exchange.getRequest().getQueryParams());
             }
 
-            if(exchange.getRequest().getURI().getPath().equals("api/adm/intf/process/returnKey")){
-                exchange.getResponse().setStatusCode(HttpStatus.OK);
-            }
-
         	exchange.getResponse().getHeaders().setAccessControlExposeHeaders(Arrays.asList("content-disposition"));
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
                 if (config.isPostLogger()) {

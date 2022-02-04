@@ -5,21 +5,21 @@ server:
     intf: lb://HALLAHDS-API-SERVICE
     homs: http://localhost:8080
     adm: http://10.20.101.171:18081
-    #    adm: lb://ADM-SERVICE
     mdm: http://10.20.101.171:18082
-    #    mdm: lb://MDM-SERVICE
     bms: http://10.20.101.171:18083
-    #    bms: lb://BMS-SERVICE
     vms: http://10.20.101.171:18084
+    #    adm: lb://ADM-SERVICE
+    #    mdm: lb://MDM-SERVICE
+    #    bms: lb://BMS-SERVICE
 
 spring:
   application:
     name: apigateway-local
 
-eureka:
-  client:
-    registryFetchIntervalSeconds: 5
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+#eureka:
+#  client:
+#    registryFetchIntervalSeconds: 5
+#    register-with-eureka: true
+#    fetch-registry: true
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka
