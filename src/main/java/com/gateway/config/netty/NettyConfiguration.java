@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 public class NettyConfiguration
         implements WebServerFactoryCustomizer<NettyReactiveWebServerFactory> {
 
-    private final int maxInBytes = 1048576; // 1M
+    private final int maxInBytes = 10485760; // 10M
 
 //    디폴트 설정 정보 확인가능. ServerProperties
 //    public NettyConfiguration(ServerProperties serverProperties) {
