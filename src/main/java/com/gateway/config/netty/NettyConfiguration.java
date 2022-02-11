@@ -1,5 +1,6 @@
 package com.gateway.config.netty;
 
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.core.Ordered;
@@ -14,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 public class NettyConfiguration
         implements WebServerFactoryCustomizer<NettyReactiveWebServerFactory> {
 
-    private final int maxInBytes = 1048576; // 1M
+    private final int maxInBytes = 10485760; // 10M
 
 //    디폴트 설정 정보 확인가능. ServerProperties
 //    public NettyConfiguration(ServerProperties serverProperties) {
@@ -24,6 +25,7 @@ public class NettyConfiguration
     @Override
     public void customize(NettyReactiveWebServerFactory factory) {
     	log.info("maxHttpHeaderSize : " + maxInBytes);
+
         factory.addServerCustomizers(
                 server -> server.httpRequestDecoder(
                         reqDecorator -> reqDecorator

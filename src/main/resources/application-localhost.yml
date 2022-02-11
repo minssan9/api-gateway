@@ -1,42 +1,23 @@
 #  local
 ---
 server:
-  port: 31000
-  db:
-#    redis:
-#      host: 10.20.101.99
-#      port: 6379
   api:
-    intf: http://localhost:34000
-    intf2: http://localhost:34001
-    auth: http://localhost:34009
+    intf: lb://HALLAHDS-API-SERVICE
     homs: http://localhost:8080
-    adm: http://localhost:80
-    mdm: http://localhost:80
-    bms: http://localhost:80
-    vms: http://localhost:80
+#    adm: http://10.20.101.171:18081
+#    mdm: http://10.20.101.171:18082
+#    bms: http://10.20.101.171:18083
+#    vms: http://10.20.101.171:18084
+    adm: lb://HGLOW-ADM-SERVICE
+    mdm: lb://HGLOW-MDM-SERVICE
+    bms: lb://HGLOW-BMS-SERVICE
+    vms: lb://HGLOW-VMS-SERVICE
 
-spring:
-#  redis:
-#    host: ${server.db.redis.host}
-#    port: ${server.db.redis.port}
-  application:
-    name: apigateway-local
-management:
-  endpoints:
-    web:
-      exposure:
-        include:
-          - "gateway"
-  endpoint:
-    gateway:
-      enabled: true
 
 #eureka:
-#  instance:
-#    hostname: localhost
 #  client:
-#    fetch-registry: false
-#    register-with-eureka: false
+#    registryFetchIntervalSeconds: 5
+#    register-with-eureka: true
+#    fetch-registry: true
 #    service-url:
-#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka
+#      defaultZone: http://localhost:8761/eureka

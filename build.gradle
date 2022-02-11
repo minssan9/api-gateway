@@ -29,6 +29,7 @@ repositories {
 ext {
     projectGroup = 'com.hallahds'
     springCloudVersion = "2020.0.2"
+//    springCloudVersion = 'Hoxton.SR9'
 
     lombokVersion = '1.18.18'
     log4jVersion = '2.15.0'
@@ -42,12 +43,14 @@ dependencyManagement {
 }
 
 dependencies {
-    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
-//    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+    compile ('org.springframework.cloud:spring-cloud-starter-gateway')
+//    compile ('org.springframework.cloud:spring-cloud-starter-gateway'){
+//        exclude module : 'spring-cloud-starter'
+//        exclude module : 'spring-boot-starter-webflux'
+//    }
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    implementation 'redis.clients:jedis'
     implementation 'junit:junit:4.12'
 
     compileOnly "org.projectlombok:lombok:${lombokVersion}"

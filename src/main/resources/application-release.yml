@@ -1,20 +1,18 @@
 #  release
 ---
 server:
-  db:
-#    redis:
-#      host: 10.20.101.134
-#      port: 6379
   api:
-    intf: http://10.20.101.99:34000
-    auth: http://10.20.101.134:34009
+    intf: lb://HALLAHDS-API-SERVICE
     homs: http://10.20.101.197:8081
-#    wms: http://10.20.101.99:34009
-#    bms: http://10.20.101.99:34009
+    adm: lb://HGLOW-ADM-SERVICE
+    mdm: lb://HGLOW-MDM-SERVICE
+    bms: lb://HGLOW-BMS-SERVICE
+    vms: lb://HGLOW-VMS-SERVICE
 
-spring:
-#  redis:
-#    host: ${server.db.redis.host}
-#    port: ${server.db.redis.port}
-  application:
-    name: apigateway-release
+eureka:
+  client:
+    registryFetchIntervalSeconds: 5
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://10.20.101.48:8761/eureka
