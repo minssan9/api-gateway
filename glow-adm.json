@@ -1,0 +1,47 @@
+{
+  "application": {
+    "name": "GLOW-ADM-SERVICE",
+    "instance": [
+      {
+        "instanceId": "10.20.101.171",
+        "hostName": "10.20.101.171:18081",
+        "app": "GLOW-ADM-SERVICE",
+        "ipAddr": "10.20.101.171",
+        "status": "UP",
+        "overriddenStatus": "UNKNOWN",
+        "port": {
+          "$": 18081,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 8443,
+          "@enabled": "true"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1646628227693,
+          "lastRenewalTimestamp": 1646628317693,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1646625055546
+        },
+        "metadata": {
+          "@class": "java.util.Collections$EmptyMap"
+        },
+        "homePageUrl": "10.20.101.171:18081/",
+        "statusPageUrl": "10.20.101.171:18081/status",
+        "healthCheckUrl": "10.20.101.171:18081/healthcheck",
+        "vipAddress": "10.20.101.171",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1646628227693",
+        "lastDirtyTimestamp": "1646628227186",
+        "actionType": "ADDED"
+      }
+    ]
+  }
+}
