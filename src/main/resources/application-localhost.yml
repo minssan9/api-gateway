@@ -8,16 +8,12 @@ server:
 #    mdm: http://10.20.101.171:18082
 #    bms: http://10.20.101.171:18083
 #    vms: http://10.20.101.171:18084
-    adm: lb://GLOW-ADM-SERVICE
-    mdm: lb://GLOW-MDM-SERVICE
-    bms: lb://GLOW-BMS-SERVICE
-    vms: lb://GLOW-VMS-SERVICE
 
 
-#eureka:
-#  client:
-#    registryFetchIntervalSeconds: 5
-#    register-with-eureka: true
-#    fetch-registry: true
-#    service-url:
-#      defaultZone: http://localhost:8761/eureka
+eureka:
+  client:
+    registryFetchIntervalSeconds: 5
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
