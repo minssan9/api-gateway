@@ -4,10 +4,6 @@ server:
   api:
     intf: lb://HALLAHDS-API-SERVICE
     homs: http://10.20.101.197:8081
-    adm: lb://HGLOW-ADM-SERVICE
-    mdm: lb://HGLOW-MDM-SERVICE
-    bms: lb://HGLOW-BMS-SERVICE
-    vms: lb://HGLOW-VMS-SERVICE
 
 eureka:
   client:

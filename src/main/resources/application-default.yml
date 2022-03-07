@@ -16,7 +16,7 @@ spring:
       routes:
         # erp API service --------------------------------------------------#
         - id: api-intf
-          uri: ${server.api.intf}
+          uri: lb://HALLAHDS-API-SERVICE
           predicates:
             - Path=/api/intf/**
             - Method=POST, GET, PUT
@@ -34,7 +34,7 @@ spring:
             - RewritePath=/api/homs/?(?<segment>.*), /$\{segment}
         # adm service --------------------------------------------------#
         - id: api-adm
-          uri: ${server.api.adm}
+          uri: lb://GLOW-ADM-SERVICE
 #          uri: lb://GLOW-ADM-SERVICE
           predicates:
             - Path=/api/adm/**
@@ -44,7 +44,7 @@ spring:
             - GlobalFilter
         # mdm service --------------------------------------------------#
         - id: api-mdm
-          uri: ${server.api.mdm}
+          uri: lb://GLOW-MDM-SERVICE
           #    uri: lb://GLOW-MDM-SERVICE
           predicates:
             - Path=/api/mdm/**
@@ -53,7 +53,7 @@ spring:
             - RewritePath=/api/mdm/?(?<segment>.*), /mdm/$\{segment}
         # bms service --------------------------------------------------#
         - id: api-bms
-          uri: ${server.api.bms}
+          uri: lb://GLOW-BMS-SERVICE
           #    uri: lb://GLOW-BMS-SERVICE
           predicates:
             - Path=/api/bms/**
@@ -62,7 +62,7 @@ spring:
             - RewritePath=/api/bms/?(?<segment>.*), /bms/$\{segment}
         # vms service --------------------------------------------------#
         - id: api-vms
-          uri: ${server.api.vms}
+          uri: lb://GLOW-VMS-SERVICE
           #    uri: lb://GLOW-VMS-SERVICE
           predicates:
             - Path=/api/vms/**
@@ -97,6 +97,8 @@ spring:
             postLogger: true
       httpclient:
         max-header-size: 52428800
+        connect-timeout: 1000
+        response-timeout: 30s
 
 
 resilience4j:
