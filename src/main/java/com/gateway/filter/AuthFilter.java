@@ -26,8 +26,8 @@ public class AuthFilter extends AbstractGatewayFilterFactory<Config> {
             }
 
             String path = exchange.getRequest().getPath().toString();
-            String accountId = exchange.getRequest().getHeaders().get("username").toString();
-            String accessToken = exchange.getRequest().getHeaders().get("Authorization").toString();
+//            String accountId = exchange.getRequest().getHeaders().get("username").toString();
+//            String accessToken = exchange.getRequest().getHeaders().get("Authorization").toString();
 
             if ( exchange.getRequest().getPath().equals("/logout")) {
             //                valueOperations.set(newAccessToken, newAccessToken);
