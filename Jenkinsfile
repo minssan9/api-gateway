@@ -1,12 +1,11 @@
 node {
     stage("Parameter Check") {
-        echo 'Start'
+        echo "Start"
         echo "env.JOB_NAME - ${env.JOB_NAME}"
         echo "env.gitlabBranch - ${env.gitlabBranch}"
         echo "env.gitlabSourceBranch - ${env.gitlabSourceBranch}"
         echo "params.GIT_BRANCH - ${params.GIT_BRANCH}"
 
-        //git_branch = sed -i 's|origin/|'"${params.GIT_BRANCH}"'|'
         git_branch = "${env.gitlabBranch.replace("origin/", "")}"
         custom_job_name = "hds_api_gateway"
 
@@ -14,8 +13,8 @@ node {
         echo "job_name - ${job_name}"
         echo "custom_job_name - ${custom_job_name}"
     }
-    stage ('Clone'){
-        git branch: "${git_branch}", credentialsId: 'gitlab_deploy', url: 'http://10.20.101.172:8111/hds_api/${custom_job_name}.git'
+    stage ("Clone"){
+        git branch: "${git_branch}", credentialsId: "gitlab_deploy", url: "http://10.20.101.172:8111/hds_api/${custom_job_name}.git"
     }
     stage("Compilations") {
         sh "chmod +x gradlew"
@@ -39,7 +38,7 @@ node {
                 "https://10.20.101.172/v3/project/c-266jz:p-d7tbd/workloads/daemonset:erp-dev:hds-api-gateway-${git_branch}?action=redeploy" --insecure
                 """
             } catch (e) {
-                sh 'echo develop deploy Fail!!'
+                sh "echo develop deploy Fail!!"
             }
         }
 
@@ -54,7 +53,7 @@ node {
                 "https://10.20.101.172/v3/project/c-4lp87:p-n5wcg/workloads/daemonset:glow:gateway?action=redeploy" --insecure
                 """
             } catch (e) {
-                sh 'echo develop deploy Fail!!'
+                sh "echo develop deploy Fail!!"
             }
         }
     }
