@@ -8,10 +8,10 @@ server:
 #    mdm: http://10.20.101.171:18082
 #    bms: http://10.20.101.171:18083
 #    vms: http://10.20.101.171:18084
-    adm: lb://HGLOW-ADM-SERVICE
-    mdm: lb://HGLOW-MDM-SERVICE
-    bms: lb://HGLOW-BMS-SERVICE
-    vms: lb://HGLOW-VMS-SERVICE
+    adm: lb://GLOW-ADM-SERVICE
+    mdm: lb://GLOW-MDM-SERVICE
+    bms: lb://GLOW-BMS-SERVICE
+    vms: lb://GLOW-VMS-SERVICE
 
 
 #eureka:
