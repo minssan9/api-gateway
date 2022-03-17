@@ -50,7 +50,7 @@ node {
                 -X POST \
                 -H "Accept: application/json" \
                 -H "Content-Type: application/json" \
-                "https://10.20.101.172/v3/project/c-4lp87:p-n5wcg/workloads/daemonset:glow:gateway?action=redeploy" --insecure
+                "https://10.20.101.172/v3/project/c-5n4wx:p-l6bnp/workloads/daemonset:api:hds-api-gateway-release?action=redeploy" --insecure
                 """
             } catch (e) {
                 sh "echo develop deploy Fail!!"
