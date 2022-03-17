@@ -2,7 +2,6 @@
 ---
 server:
   api:
-    intf: lb://HALLAHDS-API-SERVICE
     homs: http://10.20.101.197:8081
 
 eureka:
