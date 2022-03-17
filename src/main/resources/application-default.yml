@@ -97,8 +97,8 @@ spring:
             postLogger: true
       httpclient:
         max-header-size: 52428800
-        connect-timeout: 1000
-        response-timeout: 30s
+        connect-timeout: 1800000
+        response-timeout: 30m
 
 
 resilience4j:
