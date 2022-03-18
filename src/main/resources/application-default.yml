@@ -35,7 +35,6 @@ spring:
         # adm service --------------------------------------------------#
         - id: api-adm
           uri: lb://GLOW-ADM-SERVICE
-#          uri: lb://GLOW-ADM-SERVICE
           predicates:
             - Path=/api/adm/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
@@ -45,7 +44,6 @@ spring:
         # mdm service --------------------------------------------------#
         - id: api-mdm
           uri: lb://GLOW-MDM-SERVICE
-          #    uri: lb://GLOW-MDM-SERVICE
           predicates:
             - Path=/api/mdm/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
@@ -137,9 +135,6 @@ secret:
 # LOG4J 관련
 ##################################################################################################################
 logging:
-  level:
-    sql: error
-    root: info
   pattern:
     file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
     console: "%d %-5level %logger : %msg%n"

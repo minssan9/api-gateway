@@ -4,7 +4,6 @@ server:
   api:
     homs: http://10.20.101.171:8080
 
-
 eureka:
   client:
     registryFetchIntervalSeconds: 5
@@ -12,3 +11,8 @@ eureka:
     register-with-eureka: true
     service-url:
       defaultZone: http://10.20.101.99:8761/eureka
+
+logging:
+  level:
+    sql: error
+    root: info

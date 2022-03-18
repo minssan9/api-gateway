@@ -11,3 +11,7 @@ eureka:
     register-with-eureka: true
     service-url:
       defaultZone: http://10.20.101.48:8761/eureka
+
+logging:
+  level:
+    root: debug
