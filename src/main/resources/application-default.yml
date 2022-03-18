@@ -20,7 +20,6 @@ spring:
           predicates:
             - Path=/api/intf/**
             - Method=POST, GET, PUT
-#            - Weight=group_intf, 10
           filters:
             - RewritePath=/api/intf/?(?<segment>.*), /$\{segment}
             - ERPFilter
@@ -52,7 +51,6 @@ spring:
         # bms service --------------------------------------------------#
         - id: api-bms
           uri: lb://GLOW-BMS-SERVICE
-          #    uri: lb://GLOW-BMS-SERVICE
           predicates:
             - Path=/api/bms/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
@@ -61,7 +59,6 @@ spring:
         # vms service --------------------------------------------------#
         - id: api-vms
           uri: lb://GLOW-VMS-SERVICE
-          #    uri: lb://GLOW-VMS-SERVICE
           predicates:
             - Path=/api/vms/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
@@ -135,6 +132,9 @@ secret:
 # LOG4J 관련
 ##################################################################################################################
 logging:
+  level:
+    sql: error
+    root: info
   pattern:
     file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
     console: "%d %-5level %logger : %msg%n"
@@ -143,4 +143,3 @@ logging:
       clean-history-on-start: false
       max-file-size: 500MB
       max-history: 10
-
