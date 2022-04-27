@@ -22,7 +22,16 @@ spring:
             - Method=POST, GET, PUT
           filters:
             - RewritePath=/api/intf/?(?<segment>.*), /$\{segment}
-            - ERPFilter
+            - GlobalFilter
+        # WMS API service --------------------------------------------------#
+        - id: api-wms
+          uri: lb://WMS-INTF-SERVICE
+          predicates:
+            - Path=/api/wms/**
+            - Method=POST, GET, PUT
+          filters:
+            - RewritePath=/api/wms/?(?<segment>.*), /$\{segment}
+            - GlobalFilter
         # homs service  --------------------------------------------------#
         - id: api-homs
           uri: ${server.api.homs}

@@ -10,7 +10,7 @@ node {
 
     }
     stage ('Clone'){
-        git branch: "${git_branch}", credentialsId: 'gitlab_deploy', url: 'http://10.20.101.172:8111/hds_api/hds_api_gateway.git'
+        git branch: "${git_branch}", credentialsId: 'gitlab_deploy', url: 'http://10.20.101.173/hds_api/hds_api_gateway.git'
     }
     stage("Compilations") {
         sh "chmod +x gradlew"

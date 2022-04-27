@@ -14,12 +14,13 @@ node {
         echo "custom_job_name - ${custom_job_name}"
     }
     stage ("Clone"){
-        git branch: "${git_branch}", credentialsId: "gitlab_deploy", url: "http://10.20.101.172:8111/hds_api/${custom_job_name}.git"
+        git branch: "${git_branch}", credentialsId: "gitlab_deploy", url: "http://10.20.101.173/hds_api/${custom_job_name}.git"
     }
-    stage("Compilations") {
-        sh "chmod +x gradlew"
-        sh "./gradlew clean bootjar -x test"
-    }
+0
+//     stage("Compilations") {
+//         sh "chmod +x gradlew"
+//         sh "./gradlew clean bootjar -x test"
+//     }
 
     stage("Staging") {
         echo "docker build -t 10.20.101.172:5000/${custom_job_name}_${git_branch} . "   // :${BUILD_NUMBER}
