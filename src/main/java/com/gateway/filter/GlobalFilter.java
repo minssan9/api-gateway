@@ -2,10 +2,16 @@ package com.gateway.filter;
 
 import java.util.Arrays;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.gateway.config.exception.CommonException;
+import com.gateway.config.exception.CommonExceptionType;
+import com.gateway.config.handler.GatewayExceptionHandler;
+import com.gateway.config.properties.AppProperties;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +20,11 @@ import com.gateway.filter.GlobalFilter.Config;
 import lombok.Data;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @Component
 public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
-    private static final Logger logger = LogManager.getLogger(GlobalFilter.class);
+    @Autowired    private AppProperties appProperties;
+
     public GlobalFilter() {
         super(Config.class);
     }
@@ -26,19 +34,28 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             if (config.isPreLogger()) {
-                logger.info("GlobalFilter Start>>>>>>" + exchange.getRequest().getURI());
-                logger.info("GlobalFilter Start>>>>>>" + exchange.getRequest().getPath());
-                logger.info("GlobalFilter Start>>>>>>" + exchange.getRequest().getQueryParams());
+                log.info("GlobalFilter Start>>>>>>"
+                        + exchange.getRequest().getURI() + "/" + exchange.getRequest().getPath() + "/" + exchange.getRequest().getQueryParams());
+            }
+
+            String hostIp = exchange.getRequest().getRemoteAddress().getAddress().getHostAddress();
+            if (!appProperties.getHost().getAllowed().contains(hostIp)){
+                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                throw new CommonException(CommonExceptionType.UNAUTHORIZED_HOST);
             }
 
         	exchange.getResponse().getHeaders().setAccessControlExposeHeaders(Arrays.asList("content-disposition"));
-            return chain.filter(exchange).then(Mono.fromRunnable(()->{
-                if (config.isPostLogger()) {
-                    logger.info("GlobalFilter End>>>>>>" + exchange.getResponse().getStatusCode());
-                }
-            }));
+            return chain.filter(exchange).then(Mono.fromRunnable(()->{}));
         };
     }
+
+
+    @Bean
+    public ErrorWebExceptionHandler myExceptionHandler() {
+        return new GatewayExceptionHandler();
+    }
+
+
 
     @Data
     public static class Config {

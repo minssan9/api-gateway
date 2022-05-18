@@ -18,30 +18,30 @@ spring:
         - id: api-intf
           uri: lb://HALLAHDS-API-SERVICE
           predicates:
-            - Path=/api/intf/**
+            - Path=/api/**
             - Method=POST, GET, PUT
           filters:
-            - RewritePath=/api/intf/?(?<segment>.*), /$\{segment}
+            - RewritePath=/api/?(?<segment>.*), /$\{segment}
             - GlobalFilter
         # WMS API service --------------------------------------------------#
-        - id: api-wms
-          uri: lb://WMS-INTF-SERVICE
-          predicates:
-            - Path=/api/wms/**
-            - Method=POST, GET, PUT
-          filters:
-            - RewritePath=/api/wms/?(?<segment>.*), /$\{segment}
-            - GlobalFilter
+#        - id: api-wms
+#          uri: lb://WMS-INTF-SERVICE
+#          predicates:
+#            - Path=/api/wms/**
+#            - Method=POST, GET, PUT
+#          filters:
+#            - RewritePath=/api/wms/?(?<segment>.*), /$\{segment}
+#            - GlobalFilter
         # homs service  --------------------------------------------------#
         - id: api-homs
           uri: ${server.api.homs}
           predicates:
-            - Path=/api/homs/**
+            - Path=/api/oms/**
             - Method=POST, GET, PUT, DELETE
           filters:
-            - RewritePath=/api/homs/?(?<segment>.*), /$\{segment}
+            - RewritePath=/api/oms/?(?<segment>.*), /$\{segment}
         # adm service --------------------------------------------------#
-        - id: api-adm
+        - id: api-hadm
           uri: lb://GLOW-ADM-SERVICE
           predicates:
             - Path=/api/adm/**
@@ -50,7 +50,7 @@ spring:
             - RewritePath=/api/adm/?(?<segment>.*), /adm/$\{segment}
             - GlobalFilter
         # mdm service --------------------------------------------------#
-        - id: api-mdm
+        - id: api-hmdm
           uri: lb://GLOW-MDM-SERVICE
           predicates:
             - Path=/api/mdm/**
@@ -58,7 +58,7 @@ spring:
           filters:
             - RewritePath=/api/mdm/?(?<segment>.*), /mdm/$\{segment}
         # bms service --------------------------------------------------#
-        - id: api-bms
+        - id: api-hbms
           uri: lb://GLOW-BMS-SERVICE
           predicates:
             - Path=/api/bms/**
@@ -66,7 +66,7 @@ spring:
           filters:
             - RewritePath=/api/bms/?(?<segment>.*), /bms/$\{segment}
         # vms service --------------------------------------------------#
-        - id: api-vms
+        - id: api-hvms
           uri: lb://GLOW-VMS-SERVICE
           predicates:
             - Path=/api/vms/**
@@ -132,10 +132,9 @@ management:
       enabled: true # actuator를 통해 circuitbraker 상태를 확인하기 위해 설정
 
 
-jwt.secret: hallahds
-secret:
-  salt:
-    key: hallahdstest
+app:
+  auth:
+    jwt-secret: hallahds
 
 ##################################################################################################################
 # LOG4J 관련
@@ -152,3 +151,4 @@ logging:
       clean-history-on-start: false
       max-file-size: 500MB
       max-history: 10
+
