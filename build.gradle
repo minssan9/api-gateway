@@ -53,6 +53,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'junit:junit:4.12'
 
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     implementation("org.projectlombok:lombok:${lombokVersion}")
@@ -64,7 +66,11 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+//    implementation 'io.jsonwebtoken:jjwt:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+
     implementation 'com.google.code.gson:gson'
 
 

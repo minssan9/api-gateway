@@ -3,6 +3,8 @@ package com.gateway.config.exception;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.sql.SQLException;
+
 @Getter
 @AllArgsConstructor
 public enum CommonExceptionType {
@@ -27,7 +29,10 @@ public enum CommonExceptionType {
     NULL_POINTER_EXCEPTION("5100", "Null Pointer Exception"),
 
     // token
-    TOKEN_EXPIRED("9000", "Access Token is expired");
+    TOKEN_EXPIRED("9000", "Access Token is expired"),
+    TOKEN_MALFORMED("9000", "Access Token is Malformed"),
+
+    UNAUTHORIZED_HOST("9000", "UnAuthorized Host");
 
     private final String errorCode;
     private final String errorMessage;
