@@ -21,24 +21,24 @@ public class ValidateHeader {
     private final AppProperties appProperties;
     private Key secretKey;
 
-//    @PostConstruct
-//    protected void init() {
-//        byte[] keyBytes = Decoders.BASE64.decode(appProperties.getAuth().getJwtSecret());
-//        this.secretKey = Keys.hmacShaKeyFor(keyBytes);
-//    }
-//
-//    public boolean validateHost(ServerWebExchange exchange){
-////            Token 검증 방식
-////            String token = exchange.getRequest().getHeaders().get("Authorization").toString();
-////            Boolean bVaild = validateToken(token);
-//
-//        String hostIp = exchange.getRequest().getRemoteAddress().getAddress().getAddress().toString();
-//        if (appProperties.getHost().getAllowed().contains(hostIp)){
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
+    @PostConstruct
+    protected void init() {
+        byte[] keyBytes = Decoders.BASE64.decode(appProperties.getAuth().getJwtSecret());
+        this.secretKey = Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public boolean validateHost(ServerWebExchange exchange){
+//      Token 검증 방식
+        String token = exchange.getRequest().getHeaders().get("Authorization").toString();
+        Boolean bVaild = validateToken(token);
+
+        String hostIp = exchange.getRequest().getRemoteAddress().getAddress().getAddress().toString();
+        if (appProperties.getHost().getAllowed().contains(hostIp)){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public boolean validateToken(String token) {
         try {

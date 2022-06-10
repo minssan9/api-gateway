@@ -39,10 +39,6 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
             }
 
             String hostIp = exchange.getRequest().getRemoteAddress().getAddress().getHostAddress();
-            if (!appProperties.getHost().getAllowed().contains(hostIp)){
-                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                throw new CommonException(CommonExceptionType.UNAUTHORIZED_HOST);
-            }
 
         	exchange.getResponse().getHeaders().setAccessControlExposeHeaders(Arrays.asList("content-disposition"));
             return chain.filter(exchange).then(Mono.fromRunnable(()->{}));
