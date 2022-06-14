@@ -1,11 +1,11 @@
-FROM gradle:7-jdk11 as builder
+FROM 10.20.101.172:5000/gradle as builder
 WORKDIR /app
 COPY --chown=gradle:gradle . /app
 # Command gradle build
 RUN ./gradlew :clean :build -x test
 
 
-FROM java:8
+FROM 10.20.101.172:5000/openjdk11
 LABEL maintainer="sanghun.min@halla.com"
 VOLUME /hallahds/gateway
 EXPOSE 31000
