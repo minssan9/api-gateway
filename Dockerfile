@@ -2,7 +2,7 @@ FROM 10.20.101.172:5000/gradle as builder
 WORKDIR /app
 COPY --chown=gradle:gradle . /app
 # Command gradle build
-RUN ./gradlew :clean :build -x test
+RUN gradle :clean :build -x test --no-daemon
 
 
 FROM 10.20.101.172:5000/openjdk11
