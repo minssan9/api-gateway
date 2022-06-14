@@ -27,7 +27,7 @@ node {
         echo "build with this branch : ${git_branch}"
     }
     stage ("Clone"){
-        git branch: "${git_branch}", credentialsId: "gitlab_deploy", url: "http://10.20.101.173/hds_api/${JOB_NAME}.git"
+        git branch: "${git_branch}", credentialsId: "gitlab_deploy", url: "http://10.20.101.173/hds_api/${JOB_NAME_SHORT}.git"
     }
 
     stage("Build Image"){
