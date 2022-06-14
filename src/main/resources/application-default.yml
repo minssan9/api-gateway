@@ -26,12 +26,12 @@ spring:
 
         # homs service  --------------------------------------------------#
         - id: api-homs
-          uri: ${server.api.homs}
+          uri: lb://HOMS-SERVICE
           predicates:
             - Path=/api/oms/**
             - Method=POST, GET, PUT, DELETE
           filters:
-            - RewritePath=/api/oms/?(?<segment>.*), /$\{segment}
+            - RewritePath=/api/oms/?(?<segment>.*), /homs-web/$\{segment}
         # adm service --------------------------------------------------#
         - id: api-hadm
           uri: lb://GLOW-ADM-SERVICE
