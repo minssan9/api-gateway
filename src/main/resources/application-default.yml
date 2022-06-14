@@ -14,15 +14,6 @@ spring:
         enabled: true
     gateway:
       routes:
-        # erp API service --------------------------------------------------#
-        - id: api-intf
-          uri: lb://HALLAHDS-API-SERVICE
-          predicates:
-            - Path=/api/**
-            - Method=POST, GET, PUT
-          filters:
-            - RewritePath=/api/?(?<segment>.*), /$\{segment}
-            - GlobalFilter
         # WMS API service --------------------------------------------------#
 #        - id: api-wms
 #          uri: lb://WMS-INTF-SERVICE
@@ -32,6 +23,7 @@ spring:
 #          filters:
 #            - RewritePath=/api/wms/?(?<segment>.*), /$\{segment}
 #            - GlobalFilter
+
         # homs service  --------------------------------------------------#
         - id: api-homs
           uri: ${server.api.homs}
@@ -74,6 +66,15 @@ spring:
           filters:
             - RewritePath=/api/vms/?(?<segment>.*), /vms/$\{segment}
 
+        # erp API service --------------------------------------------------#
+        - id: api-intf
+          uri: lb://HALLAHDS-API-SERVICE
+          predicates:
+            - Path=/api/**
+            - Method=POST, GET, PUT
+          filters:
+            - RewritePath=/api/?(?<segment>.*), /$\{segment}
+            - GlobalFilter
       globalcors:
         corsConfigurations:
           '[/**]':
