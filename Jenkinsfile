@@ -6,8 +6,6 @@ node {
         echo "env.gitlabSourceBranch - ${env.gitlabSourceBranch}"
         echo "params.GIT_BRANCH - ${params.GIT_BRANCH}"
 
-//         custom_job_name = "hds_api_gateway"
-
         JOB_NAME_SHORT = env.JOB_NAME.split('/')[1].toLowerCase()
         JOB_NAME = JOB_NAME.toLowerCase()
         echo "JOB_NAME - ${JOB_NAME}"
@@ -29,12 +27,12 @@ node {
         echo "build with this branch : ${git_branch}"
     }
     stage ("Clone"){
-        git branch: "${git_branch}", credentialsId: "gitlab_deploy", url: "http://10.20.101.173/hds_api/${custom_job_name}.git"
+        git branch: "${git_branch}", credentialsId: "gitlab_deploy", url: "http://10.20.101.173/hds_api/${JOB_NAME}.git"
     }
 
     stage("Build Image"){
         docker_image = JOB_NAME + '-' + spring_active_profile
-        sh "docker build -t 10.20.101.172:5000/${docker_image} --build-arg SPRING_PROFILES_ACTIVE=${git_branch} -f docker-api.Dockerfile ."
+        sh "docker build -t 10.20.101.172:5000/${docker_image} --build-arg SPRING_PROFILES_ACTIVE=${spring_active_profile} -f docker-api.Dockerfile ."
         sh "docker push 10.20.101.172:5000/${docker_image}"
         sh "docker rmi 10.20.101.172:5000/${docker_image}"
     }
@@ -61,7 +59,7 @@ node {
             -X POST \
             -H "Accept: application/json" \
             -H "Content-Type: application/json" \
-            "https://10.20.101.172/v3/project/c-5n4wx:p-l6bnp/workloads/daemonset:api:hds-api-gateway-release?action=redeploy" --insecure
+            "https://10.20.101.172/v3/project/c-5n4wx:p-l6bnp/workloads/daemonset:api:hds-api-gateway-${git_branch}?action=redeploy" --insecure
             """
         } catch (e) {
             sh "echo develop deploy Fail!!"
