@@ -32,7 +32,7 @@ node {
 
     stage("Build Image"){
         docker_image = JOB_NAME + '-' + spring_active_profile
-        sh "docker build -t 10.20.101.172:5000/${docker_image} --build-arg SPRING_PROFILES_ACTIVE=${spring_active_profile} -f docker-api.Dockerfile ."
+        sh "docker build -t 10.20.101.172:5000/${docker_image} --build-arg SPRING_PROFILES_ACTIVE=${spring_active_profile} ."
         sh "docker push 10.20.101.172:5000/${docker_image}"
         sh "docker rmi 10.20.101.172:5000/${docker_image}"
     }
