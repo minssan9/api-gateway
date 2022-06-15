@@ -4,6 +4,13 @@ server:
   api:
     homs: http://10.20.101.171:8080
 
+app:
+  host:
+    allowed:
+      - 10.20.101.171     # homs
+      - 10.20.101.171     # glow
+
+
 eureka:
   client:
     registryFetchIntervalSeconds: 5
