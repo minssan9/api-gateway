@@ -31,7 +31,7 @@ spring:
             - Path=/api/oms/**
             - Method=POST, GET, PUT, DELETE
           filters:
-            - RewritePath=/api/oms/?(?<segment>.*), /homs-web/$\{segment}
+            - RewritePath=/api/oms/?(?<segment>.*), /api/oms/$\{segment}
         # adm service --------------------------------------------------#
         - id: api-hadm
           uri: lb://GLOW-ADM-SERVICE
@@ -39,7 +39,7 @@ spring:
             - Path=/api/adm/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
-            - RewritePath=/api/adm/?(?<segment>.*), /adm/$\{segment}
+            - RewritePath=/api/adm/?(?<segment>.*), /api/adm/$\{segment}
             - GlobalFilter
         # mdm service --------------------------------------------------#
         - id: api-hmdm
@@ -48,7 +48,7 @@ spring:
             - Path=/api/mdm/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
-            - RewritePath=/api/mdm/?(?<segment>.*), /mdm/$\{segment}
+            - RewritePath=/api/mdm/?(?<segment>.*), /api/mdm/$\{segment}
         # bms service --------------------------------------------------#
         - id: api-hbms
           uri: lb://GLOW-BMS-SERVICE
@@ -56,7 +56,7 @@ spring:
             - Path=/api/bms/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
-            - RewritePath=/api/bms/?(?<segment>.*), /bms/$\{segment}
+            - RewritePath=/api/bms/?(?<segment>.*), /api/bms/$\{segment}
         # vms service --------------------------------------------------#
         - id: api-hvms
           uri: lb://GLOW-VMS-SERVICE
@@ -64,7 +64,17 @@ spring:
             - Path=/api/vms/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
-            - RewritePath=/api/vms/?(?<segment>.*), /vms/$\{segment}
+            - RewritePath=/api/vms/?(?<segment>.*), /api/vms/$\{segment}
+
+        # /api/pas service --------------------------------------------------#
+        - id: api-pas
+          uri: lb://PAS-SERVICE
+          predicates:
+            - Path=/api/pas/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS
+          filters:
+            - RewritePath=/api/pas/?(?<segment>.*), /api/pas/$\{segment}
+
 
         # erp API service --------------------------------------------------#
         - id: api-intf
@@ -73,7 +83,7 @@ spring:
             - Path=/api/**
             - Method=POST, GET, PUT
           filters:
-            - RewritePath=/api/?(?<segment>.*), /$\{segment}
+            - RewritePath=/api/?(?<segment>.*), /api/$\{segment}
             - GlobalFilter
       globalcors:
         corsConfigurations:
