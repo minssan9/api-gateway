@@ -83,7 +83,7 @@ spring:
             - Path=/api/**
             - Method=POST, GET, PUT
           filters:
-            - RewritePath=/api/?(?<segment>.*), /api/$\{segment}
+            - RewritePath=/api/?(?<segment>.*), /$\{segment}
             - GlobalFilter
       globalcors:
         corsConfigurations:
