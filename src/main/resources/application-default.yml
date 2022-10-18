@@ -111,6 +111,7 @@ spring:
               - POST
               - GET
               - PUT
+              - PATCH
               - OPTIONS
               - DELETE
             maxAge: 1728000
