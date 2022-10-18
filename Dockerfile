@@ -12,7 +12,7 @@ EXPOSE 31000
 
 #RUN mkdir /app
 #COPY --from=builder /app/build/libs/*.jar /app/hds_api_gateway.jar
-COPY /app/build/libs/*.jar /app/hds_api_gateway.jar
+COPY /build/libs/*.jar /app/hds_api_gateway.jar
 
 ENV SPRING_PROFILES_ACTIVE develop
 RUN echo 'spring profile active='$SPRING_PROFILES_ACTIVE
