@@ -26,8 +26,14 @@ node {
         RANCHER_DEPLOY_NAME = JOB_NAME  + '-' + spring_active_profile
         echo "build with this branch : ${git_branch}"
     }
+
     stage ("Clone"){
         git branch: "${git_branch}", credentialsId: "gitlab_deploy", url: "http://10.20.101.173/hds_api/hds_api_gateway.git"
+    }
+
+    stage("Build Jar"){
+        sh "chmod +x gradlew"
+        sh "./gradlew :clean :build -x test --no-daemon"
     }
 
     stage("Build Image"){
