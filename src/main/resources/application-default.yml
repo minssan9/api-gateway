@@ -32,6 +32,7 @@ spring:
             - Method=POST, GET, PUT, DELETE
           filters:
             - RewritePath=/api/oms/?(?<segment>.*), /homs-web/$\{segment}
+
         # adm service --------------------------------------------------#
         - id: api-hadm
           uri: lb://GLOW-ADM-SERVICE
@@ -75,7 +76,15 @@ spring:
           filters:
             - RewritePath=/api/pas/?(?<segment>.*), /pas/$\{segment}
 
-
+        # Weco API service --------------------------------------------------#
+        - id: api-weco
+          uri: lb://WECO-IF-API-SERVICE
+          predicates:
+            - Path=/api/weco/**
+            - Method=POST, GET, PUT
+          filters:
+            - RewritePath=/api/weco/?(?<segment>.*), /weco/$\{segment}
+            - GlobalFilter
         # erp API service --------------------------------------------------#
         - id: api-intf
           uri: lb://HALLAHDS-API-SERVICE
@@ -85,6 +94,7 @@ spring:
           filters:
             - RewritePath=/api/?(?<segment>.*), /$\{segment}
             - GlobalFilter
+
       globalcors:
         corsConfigurations:
           '[/**]':
