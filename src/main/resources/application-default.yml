@@ -29,7 +29,7 @@ spring:
           uri: lb://HOMS-SERVICE
           predicates:
             - Path=/api/oms/**
-            - Method=POST, GET, PUT, DELETE
+            - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
             - RewritePath=/api/oms/?(?<segment>.*), /homs-web/$\{segment}
 
@@ -81,7 +81,7 @@ spring:
           uri: lb://WECO-IF-API-SERVICE
           predicates:
             - Path=/api/weco/**
-            - Method=POST, GET, PUT
+            - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
             - RewritePath=/api/weco/?(?<segment>.*), /weco/$\{segment}
             - GlobalFilter
@@ -90,7 +90,7 @@ spring:
           uri: lb://HALLAHDS-API-SERVICE
           predicates:
             - Path=/api/**
-            - Method=POST, GET, PUT
+            - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
             - RewritePath=/api/?(?<segment>.*), /$\{segment}
             - GlobalFilter

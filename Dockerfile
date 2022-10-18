@@ -1,8 +1,8 @@
-FROM 10.20.101.172:5000/gradle as builder
-WORKDIR /app
-COPY --chown=gradle:gradle . /app
-# Command gradle build
-RUN gradle :clean :build -x test --no-daemon
+#FROM 10.20.101.172:5000/gradle as builder
+#WORKDIR /app
+#COPY --chown=gradle:gradle . /app
+## Command gradle build
+#RUN gradle :clean :build -x test --no-daemon
 
 
 FROM 10.20.101.172:5000/openjdk11
@@ -10,8 +10,9 @@ LABEL maintainer="sanghun.min@halla.com"
 VOLUME /hallahds/gateway
 EXPOSE 31000
 
-RUN mkdir /app
-COPY --from=builder /app/build/libs/*.jar /app/hds_api_gateway.jar
+#RUN mkdir /app
+#COPY --from=builder /app/build/libs/*.jar /app/hds_api_gateway.jar
+COPY /app/build/libs/*.jar /app/hds_api_gateway.jar
 
 ENV SPRING_PROFILES_ACTIVE develop
 RUN echo 'spring profile active='$SPRING_PROFILES_ACTIVE
