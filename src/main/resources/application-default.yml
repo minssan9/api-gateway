@@ -96,7 +96,7 @@ spring:
             - GlobalFilter
 
       globalcors:
-        corsConfigurations:
+        cors-configurations:
           '[/**]':
             allowedOrigins: "*"
             allowedHeaders:
