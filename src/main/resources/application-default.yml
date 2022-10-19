@@ -13,6 +13,27 @@ spring:
       resilience4j:
         enabled: true
     gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allow-credentials: false
+            allowedHeaders: "*"
+            allowedMethods: "*"
+            maxAge: 1728000
+        default-filters:
+#          - DedupeResponseHeader: Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+          - name: GlobalFilter
+            args:
+              baseMessage: Gateway GlobalFilter
+              preLogger: true
+              postLogger: true
+        httpclient:
+          max-header-size: 52428800
+          connect-timeout: 1800000
+          response-timeout: 30m
       routes:
         # WMS API service --------------------------------------------------#
 #        - id: api-wms
@@ -95,36 +116,7 @@ spring:
             - RewritePath=/api/?(?<segment>.*), /$\{segment}
             - GlobalFilter
 
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOrigins: "*"
-            allowedHeaders:
-              - $systemver
-              - x-requested-with
-              - authorization
-              - content-type
-              - credential
-              - X-AUTH-TOKEN
-              - X-CSRF-TOKEN
-            allowedMethods:
-              - POST
-              - GET
-              - PUT
-              - PATCH
-              - OPTIONS
-              - DELETE
-            maxAge: 1728000
-      default-filters:
-        - name: GlobalFilter
-          args:
-            baseMessage: Gateway GlobalFilter
-            preLogger: true
-            postLogger: true
-      httpclient:
-        max-header-size: 52428800
-        connect-timeout: 1800000
-        response-timeout: 30m
+
 
 
 resilience4j:
