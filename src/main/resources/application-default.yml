@@ -72,7 +72,7 @@ spring:
           uri: lb://PAS-SERVICE
           predicates:
             - Path=/api/pas/**
-            - Method=POST, GET, PUT, DELETE, OPTIONS
+            - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
           filters:
             - RewritePath=/api/pas/?(?<segment>.*), /pas/$\{segment}
 
@@ -81,7 +81,7 @@ spring:
           uri: lb://WECO-IF-API-SERVICE
           predicates:
             - Path=/api/weco/**
-            - Method=POST, GET, PUT, DELETE, OPTIONS
+            - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
           filters:
             - RewritePath=/api/weco/?(?<segment>.*), /weco/$\{segment}
             - GlobalFilter
@@ -90,7 +90,7 @@ spring:
           uri: lb://HALLAHDS-API-SERVICE
           predicates:
             - Path=/api/**
-            - Method=POST, GET, PUT, DELETE, OPTIONS
+            - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
           filters:
             - RewritePath=/api/?(?<segment>.*), /$\{segment}
             - GlobalFilter
