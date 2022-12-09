@@ -46,16 +46,16 @@ spring:
 #            - GlobalFilter
 
         # homs service  --------------------------------------------------#
-        - id: api-homs
+        - id: api-homs-service
           uri: lb://HOMS-SERVICE
           predicates:
-            - Path=/api/oms/**
+            - Path=/api/homs/**
             - Method=POST, GET, PUT, DELETE, OPTIONS
           filters:
-            - RewritePath=/api/oms/?(?<segment>.*), /homs-web/$\{segment}
+            - RewritePath=/api/homs/?(?<segment>.*), /homs-web/$\{segment}
 
         # adm service --------------------------------------------------#
-        - id: api-hadm
+        - id: api-hadm-service
           uri: lb://GLOW-ADM-SERVICE
           predicates:
             - Path=/api/adm/**
@@ -64,7 +64,7 @@ spring:
             - RewritePath=/api/adm/?(?<segment>.*), /adm/$\{segment}
             - GlobalFilter
         # mdm service --------------------------------------------------#
-        - id: api-hmdm
+        - id: api-hmdm-service
           uri: lb://GLOW-MDM-SERVICE
           predicates:
             - Path=/api/mdm/**
@@ -72,7 +72,7 @@ spring:
           filters:
             - RewritePath=/api/mdm/?(?<segment>.*), /mdm/$\{segment}
         # bms service --------------------------------------------------#
-        - id: api-hbms
+        - id: api-hbms-service
           uri: lb://GLOW-BMS-SERVICE
           predicates:
             - Path=/api/bms/**
@@ -80,7 +80,7 @@ spring:
           filters:
             - RewritePath=/api/bms/?(?<segment>.*), /bms/$\{segment}
         # vms service --------------------------------------------------#
-        - id: api-hvms
+        - id: api-hvms-service
           uri: lb://GLOW-VMS-SERVICE
           predicates:
             - Path=/api/vms/**
@@ -89,7 +89,7 @@ spring:
             - RewritePath=/api/vms/?(?<segment>.*), /vms/$\{segment}
 
         # /api/pas service --------------------------------------------------#
-        - id: api-pas
+        - id: api-pas-service
           uri: lb://PAS-SERVICE
           predicates:
             - Path=/api/pas/**
@@ -98,7 +98,7 @@ spring:
             - RewritePath=/api/pas/?(?<segment>.*), /pas/$\{segment}
 
         # Weco API service --------------------------------------------------#
-        - id: api-weco
+        - id: api-weco-service
           uri: lb://WECO-IF-API-SERVICE
           predicates:
             - Path=/api/weco/**
@@ -128,7 +128,7 @@ spring:
             - GlobalFilter
 
         # erp API service --------------------------------------------------#
-        - id: api-intf
+        - id: intf-service
           uri: lb://HALLAHDS-API-SERVICE
           predicates:
             - Path=/api/**
@@ -159,6 +159,8 @@ management:
       exposure:
         include: "*"
   endpoint:
+    gateway:
+      enabled: true
     shutdown:
       enabled: true
     health:
@@ -188,3 +190,6 @@ logging:
       max-file-size: 500MB
       max-history: 10
 
+springdoc:
+  api-docs:
+    path:
