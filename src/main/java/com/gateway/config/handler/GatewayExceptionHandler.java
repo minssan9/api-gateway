@@ -40,7 +40,7 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
         } else if (ex.getClass() == IllegalArgumentException.class) {
             commonExceptionType =   CommonExceptionType.INVALID_PARAMS;
         } else if (ex.getClass() == CommonException.class) {
-            commonExceptionType =   ((CommonException) ex).getType();
+            commonExceptionType = ((CommonException) ex).getType();
         }
 
         byte[] bytes = (commonExceptionType.getErrorCode() + " / " + commonExceptionType.getErrorMessage())

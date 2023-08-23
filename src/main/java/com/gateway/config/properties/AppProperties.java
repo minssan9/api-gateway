@@ -18,6 +18,8 @@ public class AppProperties {
     private final Auth auth = new Auth();
     private final Host host = new Host();
 
+    private List<String> allowedAddress ;
+
     @Getter
     @Setter
     @NoArgsConstructor
