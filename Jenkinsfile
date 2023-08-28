@@ -52,7 +52,7 @@ node {
             -X POST \\
             -H "Accept: application/json" \\
             -H "Content-Type: application/json" \\
-            "https://10.20.101.172/v3/project/c-266jz:p-d7tbd/workloads/daemonset:erp-dev:hds-api-gateway-${git_branch}?action=redeploy" --insecure
+            "https://10.20.101.172/v3/project/c-266jz:p-jr5mr/workloads/daemonset:hds-api:hds-api-gateway-${git_branch}?action=redeploy" --insecure
             """
         } catch (e) {
             sh "echo develop deploy Fail!!"
