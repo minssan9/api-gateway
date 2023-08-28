@@ -112,19 +112,19 @@ spring:
         - id: api-sdp-adm
           uri: lb://SDP-ADM-SERVICE
           predicates:
-            - Path=/api/sdp-adm/**
+            - Path=/api/sdp/adm/**
             - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
           filters:
-            - RewritePath=/api/sdp-adm/?(?<segment>.*), /$\{segment}
+            - RewritePath=/api/sdp/adm/?(?<segment>.*), /$\{segment}
             - GlobalFilter
         # SDP-API-CORE service --------------------------------------------------#
         - id: api-sdp-core
           uri: lb://SDP-WMS-SERVICE
           predicates:
-            - Path=/api/sdp-wms/**
+            - Path=/api/sdp/wms/**
             - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
           filters:
-            - RewritePath=/api/sdp-wms/?(?<segment>.*), /$\{segment}
+            - RewritePath=/api/sdp/wms/?(?<segment>.*), /$\{segment}
             - GlobalFilter
 
         # erp API service --------------------------------------------------#
