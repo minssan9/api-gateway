@@ -1,14 +1,14 @@
 spring:
   profiles:
     group:
-      "local" : "localhost, default"
+      "local" : "local, default, swagger, route"
 ---
 spring:
   profiles:
     group:
-      "develop": "develop, default"
+      "develop": "develop, default, swagger, route"
 ---
 spring:
   profiles:
     group:
-      "release" : "release, default"
+      "release" : "release, default, swagger, route"

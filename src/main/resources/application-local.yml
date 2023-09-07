@@ -1,6 +1,7 @@
 #  local
 ---
 server:
+  address: 10.20.11.101
   api:
     homs: http://localhost:8080
 
@@ -20,6 +21,11 @@ app:
     - "175.207."
     - "172.20."
 
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true
 
 eureka:
   client:
@@ -27,5 +33,5 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://10.20.101.99:8761/eureka
+      defaultZone: http://localhost:8761/eureka
 

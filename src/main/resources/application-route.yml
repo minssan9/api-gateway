@@ -1,0 +1,169 @@
+spring:
+  application:
+    name: HALLAHDS-GATEWAY-SERVICE
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    circuitbreaker:
+      resilience4j:
+        enabled: true
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allow-credentials: false
+            allowedHeaders: "*"
+            allowedMethods: "*"
+            maxAge: 1728000
+        default-filters:
+          #          - DedupeResponseHeader: Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+          - name: GlobalFilter
+            args:
+              baseMessage: Gateway GlobalFilter
+              preLogger: true
+              postLogger: true
+        httpclient:
+          max-header-size: 52428800
+          connect-timeout: 1800000
+          response-timeout: 30m
+      routes:
+        # WMS API service --------------------------------------------------#
+        #        - id: api-wms
+        #          uri: lb://WMS-INTF-SERVICE
+        #          predicates:
+        #            - Path=/api/wms/**
+        #            - Method=POST, GET, PUT
+        #          filters:
+        #            - RewritePath=/api/wms/?(?<segment>.*), /$\{segment}
+        #            - GlobalFilter
+
+        # homs service  --------------------------------------------------#
+        - id: api-homs
+          uri: lb://HOMS-SERVICE
+          predicates:
+            - Path=/api/oms/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS
+          filters:
+            - RewritePath=/api/oms/?(?<segment>.*), /homs-web/$\{segment}
+
+        # adm service --------------------------------------------------#
+        - id: api-hadm
+          uri: lb://GLOW-ADM-SERVICE
+          predicates:
+            - Path=/api/adm/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS
+          filters:
+            - RewritePath=/api/adm/?(?<segment>.*), /adm/$\{segment}
+            - GlobalFilter
+        # mdm service --------------------------------------------------#
+        - id: api-hmdm
+          uri: lb://GLOW-MDM-SERVICE
+          predicates:
+            - Path=/api/mdm/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS
+          filters:
+            - RewritePath=/api/mdm/?(?<segment>.*), /mdm/$\{segment}
+        # bms service --------------------------------------------------#
+        - id: api-hbms
+          uri: lb://GLOW-BMS-SERVICE
+          predicates:
+            - Path=/api/bms/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS
+          filters:
+            - RewritePath=/api/bms/?(?<segment>.*), /bms/$\{segment}
+        # vms service --------------------------------------------------#
+        - id: api-hvms
+          uri: lb://GLOW-VMS-SERVICE
+          predicates:
+            - Path=/api/vms/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS
+          filters:
+            - RewritePath=/api/vms/?(?<segment>.*), /vms/$\{segment}
+
+        # /api/pas service --------------------------------------------------#
+        - id: api-pas
+          uri: lb://PAS-SERVICE
+          predicates:
+            - Path=/api/pas/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
+          filters:
+            - RewritePath=/api/pas/?(?<segment>.*), /pas/$\{segment}
+
+        # Weco API service --------------------------------------------------#
+        - id: api-weco
+          uri: lb://WECO-IF-API-SERVICE
+          predicates:
+            - Path=/api/weco/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
+          filters:
+            - RewritePath=/api/weco/?(?<segment>.*), /weco/$\{segment}
+            - GlobalFilter
+
+
+        # SDP-API ADM service --------------------------------------------------#
+        - id: api-sdp-adm
+          uri: lb://SDP-ADM-SERVICE
+          predicates:
+            - Path=/api/sdp/adm/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
+          filters:
+            - RewritePath=/api/sdp/adm/?(?<segment>.*), /$\{segment}
+            - GlobalFilter
+        # SDP-API-CORE service --------------------------------------------------#
+        - id: api-sdp-core
+          uri: lb://SDP-WMS-SERVICE
+          predicates:
+            - Path=/api/sdp/wms/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
+          filters:
+            #            - RewritePath=/api/sdp/wms/?(?<segment>.*), /$\{segment}
+            - GlobalFilter
+        # SDP-API-MDM service --------------------------------------------------#
+        - id: api-sdp-mdm
+          uri: lb://SDP-MDM-SERVICE
+          predicates:
+            - Path=/api/sdp/mdm/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
+          filters:
+            #            - RewritePath=/api/sdp/mdm/?(?<segment>.*), /$\{segment}
+            - GlobalFilter
+        # SDP-API-OMS service --------------------------------------------------#
+        - id: api-sdp-oms
+          uri: lb://SDP-OMS-SERVICE
+          predicates:
+            - Path=/api/sdp/oms/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
+          filters:
+            #            - RewritePath=/api/sdp/oms/?(?<segment>.*), /$\{segment}
+            - GlobalFilter
+        # SDP-API-TMS service --------------------------------------------------#
+        - id: api-sdp-tms
+          uri: lb://SDP-TMS-SERVICE
+          predicates:
+            - Path=/api/sdp/tms/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
+          filters:
+            #            - RewritePath=/api/sdp/tms/?(?<segment>.*), /$\{segment}
+            - GlobalFilter
+
+
+        # erp API service --------------------------------------------------#
+        - id: api-intf
+          uri: lb://HALLAHDS-API-SERVICE
+          predicates:
+            - Path=/api/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
+          filters:
+            - RewritePath=/api/?(?<segment>.*), /$\{segment}
+            - GlobalFilter
+
+        # API Gateway service --------------------------------------------------#
+        - id: openapi
+          uri: lb://HALLAHDS-GATEWAY-SERVICE:${server.port}
+          predicates:
+            - Path=/v3/api-docs/**
+          filters:
+            - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs

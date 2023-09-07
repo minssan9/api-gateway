@@ -20,6 +20,13 @@ app:
     - "175.207."
     - "172.20."
 
+
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true
+
 eureka:
   client:
     registryFetchIntervalSeconds: 5

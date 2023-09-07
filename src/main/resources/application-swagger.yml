@@ -1,0 +1,35 @@
+springdoc:
+  enable-native-support: true
+  swagger-ui:
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: API Gateway Service
+        primaryName: API Gateway Service
+      - url: /api/v3/api-docs
+        name: HALLAHDS-API-SERVICE
+        primaryName: HALLAHDS-API-SERVICE
+
+      - url: /api/sdp/adm/v3/api-docs
+        name: SDP-ADM-SERVICE
+        primaryName: SDP-ADM-SERVICE
+      - url: /api/sdp/mdm/v3/api-docs
+        name: SDP-MDM-SERVICE
+        primaryName: SDP-MDM-SERVICE
+      - url: /api/sdp/wms/v3/api-docs
+        name: SDP-WMS-SERVICE
+        primaryName: SDP-WMS-SERVICE
+      - url: /api/sdp/oms/v3/api-docs
+        name: SDP-OMS-SERVICE
+        primaryName: SDP-OMS-SERVICE
+      - url: /api/sdp/tms/v3/api-docs
+        name: SDP-TMS-SERVICE
+        primaryName: SDP-TMS-SERVICE
+
+
+openapi:
+  service:
+    title: price-service doc #title that you will want to display in the swagger ui
+    version: 1.0.0
+    url: http://localhost:31000 #api gateway url
