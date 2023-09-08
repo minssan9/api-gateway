@@ -1,6 +1,6 @@
 spring:
   application:
-    name: HALLAHDS-GATEWAY-SERVICE
+    name: HL-GATEWAY-SERVICE
   main:
     allow-bean-definition-overriding: true
   cloud:
@@ -170,7 +170,7 @@ spring:
 
         # API Gateway service --------------------------------------------------#
         - id: openapi
-          uri: lb://HALLAHDS-GATEWAY-SERVICE:${server.port}
+          uri: lb://HALLAHDS-GATEWAY-SERVICE
           predicates:
             - Path=/v3/api-docs/**
           filters:

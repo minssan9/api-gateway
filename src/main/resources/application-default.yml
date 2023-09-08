@@ -7,7 +7,7 @@ server:
 
 eureka:
   instance:
-    instance-id: HLHDS-GateWay
+    instance-id: HALLAHDS-GATEWAY-SERVICE
     prefer-ip-address: true
 
 resilience4j:

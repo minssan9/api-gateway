@@ -33,6 +33,6 @@ springdoc:
 
 openapi:
   service:
-    title: price-service doc #title that you will want to display in the swagger ui
+    title: HL-API-Swagger doc #title that you will want to display in the swagger ui
     version: 1.0.0
     url: http://localhost:31000 #api gateway url

@@ -27,8 +27,8 @@ public class SwaggerConfig {
                 .getRouteDefinitions().collectList().block()
                 .stream()
                 .map(RouteDefinition::getId)
-                .filter(id -> id.matches(".*-SERVICE"))
-                .map(id -> id.replace("-SERVICE", ""))
+//                .filter(id -> id.matches("HL-.*"))
+                .map(id -> id.replace("", ""))
                 .forEach(swaggerUiParameters::addGroup);
     }
 
