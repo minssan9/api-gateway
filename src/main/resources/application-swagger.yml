@@ -12,20 +12,23 @@ springdoc:
         primaryName: HALLAHDS-API-SERVICE
 
       - url: /api/sdp/adm/v3/api-docs
-        name: SDP-ADM-SERVICE
-        primaryName: SDP-ADM-SERVICE
+        name: HL-WMS-API-ADM
+        primaryName: HL-WMS-API-ADM
       - url: /api/sdp/mdm/v3/api-docs
-        name: SDP-MDM-SERVICE
-        primaryName: SDP-MDM-SERVICE
+        name: HL-WMS-API-MDM
+        primaryName: HL-WMS-API-MDM
       - url: /api/sdp/wms/v3/api-docs
-        name: SDP-WMS-SERVICE
-        primaryName: SDP-WMS-SERVICE
+        name: HL-WMS-API-WMS
+        primaryName: HL-WMS-API-WMS
       - url: /api/sdp/oms/v3/api-docs
-        name: SDP-OMS-SERVICE
-        primaryName: SDP-OMS-SERVICE
+        name: HL-WMS-API-OMS
+        primaryName: HL-WMS-API-OMS
       - url: /api/sdp/tms/v3/api-docs
-        name: SDP-TMS-SERVICE
-        primaryName: SDP-TMS-SERVICE
+        name: HL-WMS-API-TMS
+        primaryName: HL-WMS-API-TMS
+      - url: /api/sdp/wms-t/v3/api-docs
+        name: HL-WMS-API-TACTIC
+        primaryName: HL-WMS-API-TACTIC
 
 
 openapi:

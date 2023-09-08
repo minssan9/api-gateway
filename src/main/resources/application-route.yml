@@ -105,7 +105,7 @@ spring:
 
         # SDP-API ADM service --------------------------------------------------#
         - id: api-sdp-adm
-          uri: lb://SDP-ADM-SERVICE
+          uri: lb://HL-WMS-API-ADM
           predicates:
             - Path=/api/sdp/adm/**
             - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
@@ -114,7 +114,7 @@ spring:
             - GlobalFilter
         # SDP-API-CORE service --------------------------------------------------#
         - id: api-sdp-core
-          uri: lb://SDP-WMS-SERVICE
+          uri: lb://HL-WMS-API-WMS
           predicates:
             - Path=/api/sdp/wms/**
             - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
@@ -123,7 +123,7 @@ spring:
             - GlobalFilter
         # SDP-API-MDM service --------------------------------------------------#
         - id: api-sdp-mdm
-          uri: lb://SDP-MDM-SERVICE
+          uri: lb://HL-WMS-API-MDM
           predicates:
             - Path=/api/sdp/mdm/**
             - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
@@ -132,7 +132,7 @@ spring:
             - GlobalFilter
         # SDP-API-OMS service --------------------------------------------------#
         - id: api-sdp-oms
-          uri: lb://SDP-OMS-SERVICE
+          uri: lb://HL-WMS-API-OMS
           predicates:
             - Path=/api/sdp/oms/**
             - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
@@ -141,14 +141,22 @@ spring:
             - GlobalFilter
         # SDP-API-TMS service --------------------------------------------------#
         - id: api-sdp-tms
-          uri: lb://SDP-TMS-SERVICE
+          uri: lb://HL-WMS-API-TMS
           predicates:
             - Path=/api/sdp/tms/**
             - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
           filters:
             #            - RewritePath=/api/sdp/tms/?(?<segment>.*), /$\{segment}
             - GlobalFilter
-
+        # SDP-API-TACTIC service --------------------------------------------------#
+        - id: api-sdp-wms-t
+          uri: lb://HL-WMS-API-TACTIC
+          predicates:
+            - Path=/api/sdp/wms-t/**
+            - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
+          filters:
+            #            - RewritePath=/api/sdp/tms/?(?<segment>.*), /$\{segment}
+            - GlobalFilter
 
         # erp API service --------------------------------------------------#
         - id: api-intf
