@@ -1,7 +1,6 @@
 #  local
 ---
 server:
-#  address: 10.20.11.101
   api:
     homs: http://localhost:8080
 
@@ -29,6 +28,7 @@ springdoc:
 
 eureka:
   client:
+    enabled: true     # enabled = false
     registryFetchIntervalSeconds: 5
     register-with-eureka: true
     fetch-registry: true

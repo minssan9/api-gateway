@@ -11,7 +11,7 @@ import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
+
 
 @Configuration
 public class SwaggerConfig {
@@ -27,22 +27,27 @@ public class SwaggerConfig {
                 .getRouteDefinitions().collectList().block()
                 .stream()
                 .map(RouteDefinition::getId)
-//                .filter(id -> id.matches("HL-.*"))
-                .map(id -> id.replace("", ""))
                 .forEach(swaggerUiParameters::addGroup);
+
+//        return args -> locator
+//                .getRouteDefinitions().collectList().block()
+//                .stream()
+//                .map(RouteDefinition::getId)
+//                .filter(id -> id.matches(".*-SERVICE"))
+//                .map(id -> id.replace("-SERVICE", ""))
+//                .forEach(swaggerUiParameters::addGroup);
     }
 
-
-    @Bean
-    public OpenAPI springOpenAPI(
-            @Value("${openapi.service.title}") String serviceTitle,
-            @Value("${openapi.service.version}") String serviceVersion,
-            @Value("${openapi.service.url}") String url
-    ) {
-        return new OpenAPI()
-                .servers(List.of(new Server().url(url)))
-                .info(new Info().title(appName)
-                        .description(appName + " API 명세서")
-                        .version("v0.0.1"));
-    }
+//    @Bean
+//    public OpenAPI springOpenAPI(
+//            @Value("${openapi.service.title}") String serviceTitle,
+//            @Value("${openapi.service.version}") String serviceVersion,
+//            @Value("${openapi.service.url}") String url
+//    ) {
+//        return new OpenAPI()
+//                .servers(List.of(new Server().url(url)))
+//                .info(new Info().title(appName)
+//                        .description(appName + " API 명세서")
+//                        .version("v0.0.1"));
+//    }
 }

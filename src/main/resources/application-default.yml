@@ -5,9 +5,15 @@ server:
   ssl:
     enabled: false
 
+spring:
+  application:
+    name: HLHDS-GATEWAY-SERVICE
+  output:
+    ansi.enabled: always # colorize console logs
+
 eureka:
   instance:
-    instance-id: HALLAHDS-GATEWAY-SERVICE
+    instance-id: HLHDS-GATEWAY-SERVICE
     prefer-ip-address: true
 
 resilience4j:
@@ -59,6 +65,3 @@ logging:
       max-file-size: 500MB
       max-history: 10
 
-springdoc:
-  api-docs:
-    path:

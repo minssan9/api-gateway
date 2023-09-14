@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: HL-GATEWAY-SERVICE
   main:
     allow-bean-definition-overriding: true
   cloud:
@@ -39,6 +37,7 @@ spring:
         #          filters:
         #            - RewritePath=/api/wms/?(?<segment>.*), /$\{segment}
         #            - GlobalFilter
+
 
         # homs service  --------------------------------------------------#
         - id: api-homs
@@ -104,7 +103,7 @@ spring:
 
 
         # SDP-API ADM service --------------------------------------------------#
-        - id: api-sdp-adm
+        - id: HL-WMS-API-ADM
           uri: lb://HL-WMS-API-ADM
           predicates:
             - Path=/api/sdp/adm/**
@@ -113,7 +112,7 @@ spring:
             - RewritePath=/api/sdp/adm/?(?<segment>.*), /$\{segment}
             - GlobalFilter
         # SDP-API-CORE service --------------------------------------------------#
-        - id: api-sdp-core
+        - id: HL-WMS-API-WMS
           uri: lb://HL-WMS-API-WMS
           predicates:
             - Path=/api/sdp/wms/**
@@ -122,7 +121,7 @@ spring:
             #            - RewritePath=/api/sdp/wms/?(?<segment>.*), /$\{segment}
             - GlobalFilter
         # SDP-API-MDM service --------------------------------------------------#
-        - id: api-sdp-mdm
+        - id: HL-WMS-API-MDM
           uri: lb://HL-WMS-API-MDM
           predicates:
             - Path=/api/sdp/mdm/**
@@ -131,7 +130,7 @@ spring:
             #            - RewritePath=/api/sdp/mdm/?(?<segment>.*), /$\{segment}
             - GlobalFilter
         # SDP-API-OMS service --------------------------------------------------#
-        - id: api-sdp-oms
+        - id: HL-WMS-API-OMS
           uri: lb://HL-WMS-API-OMS
           predicates:
             - Path=/api/sdp/oms/**
@@ -140,7 +139,7 @@ spring:
             #            - RewritePath=/api/sdp/oms/?(?<segment>.*), /$\{segment}
             - GlobalFilter
         # SDP-API-TMS service --------------------------------------------------#
-        - id: api-sdp-tms
+        - id: HL-WMS-API-TMS
           uri: lb://HL-WMS-API-TMS
           predicates:
             - Path=/api/sdp/tms/**
@@ -149,8 +148,8 @@ spring:
             #            - RewritePath=/api/sdp/tms/?(?<segment>.*), /$\{segment}
             - GlobalFilter
         # SDP-API-TACTIC service --------------------------------------------------#
-        - id: api-sdp-wms-t
-          uri: lb://HL-WMS-API-TACTIC
+        - id: HL-WMS-API-WMS-T
+          uri: lb://HL-WMS-API-WMS-T
           predicates:
             - Path=/api/sdp/wms-t/**
             - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
@@ -168,9 +167,10 @@ spring:
             - RewritePath=/api/?(?<segment>.*), /$\{segment}
             - GlobalFilter
 
+
         # API Gateway service --------------------------------------------------#
-        - id: openapi
-          uri: lb://HALLAHDS-GATEWAY-SERVICE
+        - id: HLHDS-GATEWAY-SERVICE
+          uri: http://localhost:${server.port}
           predicates:
             - Path=/v3/api-docs/**
           filters:
