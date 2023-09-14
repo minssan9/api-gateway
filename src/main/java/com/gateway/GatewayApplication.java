@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 
+
 @SpringBootApplication(scanBasePackages = {"com.gateway"})
 @ConfigurationPropertiesScan
 @EnableConfigurationProperties({

@@ -28,8 +28,8 @@ repositories {
 
 ext {
     projectGroup = 'com.hallahds'
-    springCloudVersion = "2021.0.3"
-//    springCloudVersion = 'Hoxton.SR9'
+    springBootVersion = '2.5.2'
+    springCloudVersion = '2020.0.5'
 
     lombokVersion = '1.18.18'
     log4jVersion = '2.15.0'
@@ -39,6 +39,7 @@ ext {
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
     }
 }
 
@@ -51,7 +52,7 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
 
     implementation 'org.springdoc:springdoc-openapi-webflux-core:1.5.13'
-    implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.5.13'
+    implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.5.13' 
 
     implementation 'junit:junit:4.12'
 

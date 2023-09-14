@@ -2,6 +2,9 @@ spring:
   main:
     allow-bean-definition-overriding: true
   cloud:
+    discovery:
+      locator:
+        enabled: true
     circuitbreaker:
       resilience4j:
         enabled: true
@@ -170,7 +173,7 @@ spring:
 
         # API Gateway service --------------------------------------------------#
         - id: HLHDS-GATEWAY-SERVICE
-          uri: http://localhost:${server.port}
+          uri: http://HLHDS-GATEWAY-SERVICE
           predicates:
             - Path=/v3/api-docs/**
           filters:
