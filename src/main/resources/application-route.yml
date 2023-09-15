@@ -112,7 +112,7 @@ spring:
             - Path=/api/sdp/adm/**
             - Method=POST, GET, PUT, DELETE, OPTIONS, PATCH
           filters:
-            - RewritePath=/api/sdp/adm/?(?<segment>.*), /$\{segment}
+#            - RewritePath=/api/sdp/adm/?(?<segment>.*), /api/sdp/adm/$\{segment}
             - GlobalFilter
         # SDP-API-CORE service --------------------------------------------------#
         - id: HL-WMS-API-WMS
