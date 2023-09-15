@@ -19,6 +19,10 @@ bootJar {
     }
 }
 
+jar {
+    enabled = false
+}
+
 repositories {
     mavenCentral()
     maven { url "https://www.datanucleus.org/downloads/maven2/"}
