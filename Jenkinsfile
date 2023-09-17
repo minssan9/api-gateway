@@ -33,7 +33,7 @@ node {
             env.GIT_COMMIT = gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT
             println "Previous successful commit is : ${env.GIT_COMMIT}"
             echo ("Previous successful commit is : ${gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT}")
-            echo gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+            echo gitVars.GIT_PREVIOUS_COMMIT
         } catch (Exception e) {
             echo "get git scm variables fail"
         }
