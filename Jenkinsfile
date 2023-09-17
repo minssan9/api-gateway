@@ -86,22 +86,23 @@ node {
     }
 
     withCredentials([sshUserPrivateKey(credentialsId: 'en9door_aws_ssh', keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
-        def remote = [:]
-        remote.name = 'en9door_ec2'
-        remote.host = aws_ec2_host
-        remote.allowAnyHosts = true
-        remote.user = userName
-        remote.identityFile = identity   //remote.passphrase = passphrase
+            def remote = [:]
+            remote.name = 'en9door_ec2'
+            remote.host = aws_ec2_host
+            remote.allowAnyHosts = true
+            remote.user = userName
+            remote.identityFile = identity   //remote.passphrase = passphrase
 
 
-        stage('deploy in release env') {
-            if (git_branch == "release") {
-            echo "deploy in release env"
-                sshCommand remote: remote, command: "aws ecr get-login-password --region ${aws_region} | sudo docker login --username AWS --password-stdin ${aws_ecrRegistry}"
-                sshCommand remote: remote, command: "sudo docker pull ${aws_ecrRegistry}/${ecrRepository}:latest"
-                sshCommand remote: remote, command: "sudo docker stop ${ecrRepository}"
-                sshCommand remote: remote, command: "sudo docker rm -f ${ecrRepository}"
-                sshCommand remote: remote, command: "sudo docker run --name ${env.JOB_NAME} -it -d --restart=always -p 31000:31000 -m 1900m -v /var/log:/var/log -e SPRING_PROFILES_ACTIVE=${git_branch} -h ${env.JOB_NAME}  ${aws_ecrRegistry}/${ecrRepository}:latest"
+            stage('deploy in release env') {
+                if (git_branch == "release") {
+                echo "deploy in release env"
+                    sshCommand remote: remote, command: "aws ecr get-login-password --region ${aws_region} | sudo docker login --username AWS --password-stdin ${aws_ecrRegistry}"
+                    sshCommand remote: remote, command: "sudo docker pull ${aws_ecrRegistry}/${ecrRepository}:latest"
+                    sshCommand remote: remote, command: "sudo docker stop ${ecrRepository}"
+                    sshCommand remote: remote, command: "sudo docker rm -f ${ecrRepository}"
+                    sshCommand remote: remote, command: "sudo docker run --name ${env.JOB_NAME} -it -d --restart=always -p 31000:31000 -m 1900m -v /var/log:/var/log -e SPRING_PROFILES_ACTIVE=${git_branch} -h ${env.JOB_NAME}  ${aws_ecrRegistry}/${ecrRepository}:latest"
+            }
         }
     }
 }
