@@ -1,74 +1,106 @@
 node {
+    aws_region = "ap-northeast-2"
+    aws_s3_bucket =  params.aws_s3_bucket
+    aws_ecrRegistry = env.aws_ecrRegistry
+    aws_ec2_host = env.aws_ec2_host
+    BUILD_ENVIRONMENT = "En9doorweb-1"
+    EB_ENV_NAME = "En9doorweb-1"
+
+    def gitVars = git branch: "$RELEASE_BRANCH", url: "$SOURCE_CODE_URL"
+    // gitVars will contain the following keys: GIT_BRANCH, GIT_COMMIT, GIT_LOCAL_BRANCH, GIT_PREVIOUS_COMMIT, GIT_PREVIOUS_SUCCESSFUL_COMMIT, GIT_URL
+    println gitVars
+    println "Previous successful commit is : ${gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT}"
+    gitCommitId = gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+
     stage("Parameter Check") {
-        echo "Start"
-        echo "env.JOB_NAME - ${env.JOB_NAME}"
-        echo "env.gitlabBranch - ${env.gitlabBranch}"
-        echo "env.gitlabSourceBranch - ${env.gitlabSourceBranch}"
-        echo "params.GIT_BRANCH - ${params.GIT_BRANCH}"
-
-        JOB_NAME_SHORT = env.JOB_NAME.split('/')[1].toLowerCase()
-        JOB_NAME = JOB_NAME.toLowerCase()
         echo "JOB_NAME - ${JOB_NAME}"
+        echo "scm.branches[0].name - ${scm.branches[0].name}"
 
-        if (env.ref.contains('refs/heads/') ){
-            git_branch = "${ref.replace("refs/heads/", "")}"
-        }else if (env.gitlabBranch != null){
-            git_branch = "${env.gitlabBranch.replace("origin/", "")}"
-        }else{
-            git_branch = "${params.GIT_BRANCH.replace("origin/", "")}"
+        if (ref.contains('refs/heads/') ){
+            sh "echo ref.replace - ${ref.replace("refs/heads/", "")}"
+            git_branch = ref.replace("refs/heads/", "")
+        }else if (scm.branches[0].name != null ){
+            sh "echo scm.branches[0].name - ${scm.branches[0].name}"
+            git_branch = scm.branches[0].name.replace("*/","")
+        }else {
+            sh "echo GIT_BRANCH - ${GIT_BRANCH}"
+            git_branch = env.GIT_BRANCH.replace("origin/", "")
         }
-
-        if (git_branch.contains('release')) {
-            spring_active_profile = 'release'
-        }else if ( git_branch.contains('develop')){
-            spring_active_profile = 'develop'
-        }
-        RANCHER_DEPLOY_NAME = JOB_NAME  + '-' + spring_active_profile
-        echo "build with this branch : ${git_branch}"
+        echo ("build with this branch : ${git_branch}")
     }
 
-    stage ("Clone"){
-        git branch: "${git_branch}", credentialsId: "gitlab_deploy", url: "http://10.20.101.173/hds_api/hds_api_gateway.git"
+    stage ('Clone'){
+        echo ("clone : ${git_branch}")
+        git branch: "${git_branch}", credentialsId: 'githu_ssh_minssan9', url: 'https://github.com/minssan9/api-gateway.git'
+    }
+
+    if (git_branch != "develop"){
+        git_branch = "release"
     }
 
     stage("Build Jar"){
         sh "chmod +x gradlew"
-        sh "./gradlew :clean :build -x test --no-daemon"
+        sh "./gradlew :clean :${job_type}:build -x test --no-daemon --parallel --continue > /dev/null 2>&1 || true"
     }
 
-    stage("Build Image"){
-        docker_image = RANCHER_DEPLOY_NAME
-        sh "docker build -t 10.20.101.172:5000/${docker_image} --build-arg SPRING_PROFILES_ACTIVE=${spring_active_profile} ."
-        sh "docker push 10.20.101.172:5000/${docker_image}"
-        sh "docker rmi 10.20.101.172:5000/${docker_image}"
+    stage("Build Docker Image") {
+        ecrRepository = JOB_NAME
+
+        echo ("${aws_ecrRegistry}/${ecrRepository} --platform=linux/arm64  -f Dockerfile .")  //  --build-arg PROFILES=${git_branch}
+        appImage = docker.build("${aws_ecrRegistry}/${ecrRepository}", "--platform=linux/arm64  -f Dockerfile . " )
+//        docker build -t ${aws_ecrRegistry}/en9door_web_develop --build-arg PROFILES=develop ./
+//        docker build -t ${aws_ecrRegistry}/en9door_web_release --build-arg PROFILES=release ./
+//           docker build -t 293001004573.dkr.ecr.ap-northeast-2.amazonaws.com/en9door_web_develop -f docker/Dockerfile --build-arg PROFILES=develop ./
+//          docker build -t 293001004573.dkr.ecr.ap-northeast-2.amazonaws.com/en9door_web_release -f docker/Dockerfile  --build-arg PROFILES=release ./
+//       docker build --platform=linux/arm64  -t 293001004573.dkr.ecr.ap-northeast-2.amazonaws.com/en9door_web_develop:arm64 -f docker/Dockerfile  --build-arg PROFILES=develop ./
+//        docker build --platform=linux/arm64  -t 293001004573.dkr.ecr.ap-northeast-2.amazonaws.com/en9door_web_release -f docker/Dockerfile  --build-arg PROFILES=release ./
+//        docker build --platform=linux/arm64  -t 293001004573.dkr.ecr.ap-northeast-2.amazonaws.com/en9door_web_develop -f docker/Dockerfile  --build-arg PROFILES=develop ./
+
     }
 
+    stage("Push Docker Image") {         // login to ECR - for now it seems that that the ECR Jenkins plugin is not performing the login as expected. I hope it will in the future.
+        docker.withRegistry("https://${aws_ecrRegistry}", "ecr:ap-northeast-2:aws_en9door_credential"){
+            appImage.push("${env.BUILD_NUMBER}")
+            appImage.push("latest")
+        }
+//          aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 293001004573.dkr.ecr.ap-northeast-2.amazonaws.com
+//          docker push 293001004573.dkr.ecr.ap-northeast-2.amazonaws.com/en9door_web
+//          docker pull 293001004573.dkr.ecr.ap-northeast-2.amazonaws.com/en9door_web
 
-    stage("Staging") {
-        try {
-            // develop redeploy
-            sh """
-            curl -u "${HOMS_CATTLE_ACCESS_KEY}:${HOMS_CATTLE_SECRET_KEY}" \
-            -X POST \\
-            -H "Accept: application/json" \\
-            -H "Content-Type: application/json" \\
-            "https://10.20.101.172/v3/project/c-266jz:p-jr5mr/workloads/daemonset:hds-api:hds-api-gateway-${git_branch}?action=redeploy" --insecure
-            """
-        } catch (e) {
-            sh "echo develop deploy Fail!!"
+    }
+
+    stage('deploy in develop env') {
+        if (git_branch == "develop") {
+            echo "deploy in develop env"
+            sh "docker rm -f ${ecrRepository}"       //        docker rm -f en9door_api
+            appImage.run("--name ${ecrRepository} -it -d --restart=always -p  31000:31000 -v /var/log:/var/log -e SPRING_PROFILES_ACTIVE=${git_branch}")
+//             sh "docker image prune -a -f"
+//      sh "docker run -it -d -p 34001:34001 -v /var/log:/var/log -e SPRING_PROFILES_ACTIVE=${git_branch} -h ${env.JOB_NAME} --name ${env.JOB_NAME}_${git_branch} minssan9/${env.JOB_NAME}_${git_branch}:${BUILD_NUMBER} "
+//      docker run -it -d --restart=always -p 34001:34001 -v d:/docker/log/en9door_api:/var/log --memory="2g" -e SPRING_PROFILES_ACTIVE=develop --name en9door_api 293001004573.dkr.ecr.ap-northeast-2.amazonaws.com/en9door_api
+//      docker run --name ${ecrRepository} -it -d -p 34001:34001  -v /var/log:/var/log -e SPRING_PROFILES_ACTIVE=${git_branch}  ${ecrRegistry}/${ecrRepository}
+//         docker run --name en9door_api_develop -it -d --restart=always -p 34001:34001  -v d:/docker/log/en9door_api:/var/log -e SPRING_PROFILES_ACTIVE=develop 293001004573.dkr.ecr.ap-northeast-2.amazonaws.com/en9door_api_develop
+//         docker run --name en9door_api_release -it -d --restart=always -p 34001:34001 -m 1900m -v /var/log:/var/log -e SPRING_PROFILES_ACTIVE=release 293001004573.dkr.ecr.ap-northeast-2.amazonaws.com/en9door_api_release
+
         }
 
-        try {
-            // release redeploy
-            sh """
-            curl -u "${HOMS_CATTLE_ACCESS_KEY}:${HOMS_CATTLE_SECRET_KEY}" \
-            -X POST \
-            -H "Accept: application/json" \
-            -H "Content-Type: application/json" \
-            "https://10.20.101.172/v3/project/c-5n4wx:p-l6bnp/workloads/daemonset:api:hds-api-gateway-${git_branch}?action=redeploy" --insecure
-            """
-        } catch (e) {
-            sh "echo develop deploy Fail!!"
-        }
+    }
+
+    withCredentials([sshUserPrivateKey(credentialsId: 'en9door_aws_ssh', keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
+        def remote = [:]
+        remote.name = 'en9door_ec2'
+        remote.host = aws_ec2_host
+        remote.allowAnyHosts = true
+        remote.user = userName
+        remote.identityFile = identity   //remote.passphrase = passphrase
+
+
+        stage('deploy in release env') {
+            if (git_branch == "release") {
+            echo "deploy in release env"
+                sshCommand remote: remote, command: "aws ecr get-login-password --region ${aws_region} | sudo docker login --username AWS --password-stdin ${aws_ecrRegistry}"
+                sshCommand remote: remote, command: "sudo docker pull ${aws_ecrRegistry}/${ecrRepository}:latest"
+                sshCommand remote: remote, command: "sudo docker stop ${ecrRepository}"
+                sshCommand remote: remote, command: "sudo docker rm -f ${ecrRepository}"
+                sshCommand remote: remote, command: "sudo docker run --name ${env.JOB_NAME} -it -d --restart=always -p 31000:31000 -m 1900m -v /var/log:/var/log -e SPRING_PROFILES_ACTIVE=${git_branch} -h ${env.JOB_NAME}  ${aws_ecrRegistry}/${ecrRepository}:latest"        }
     }
 }

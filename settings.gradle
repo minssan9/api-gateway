@@ -4,4 +4,4 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-rootProject.name = 'hds_api_gateway'
+rootProject.name = 'api-gateway'

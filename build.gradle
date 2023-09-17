@@ -8,7 +8,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 
-group = 'com.hallahds'
+group = 'com.voyagers'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
@@ -31,7 +31,7 @@ repositories {
 }
 
 ext {
-    projectGroup = 'com.hallahds'
+    projectGroup = 'com.voyagers'
     springBootVersion = '2.5.2'
     springCloudVersion = '2020.0.5'
 
