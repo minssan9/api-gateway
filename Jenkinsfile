@@ -9,7 +9,22 @@ node {
     SOURCE_CODE_URL = "https://github.com/minssan9/api-gateway.git"
 
     stage("Parameter Check") {
-        echo "JOB_NAME - ${JOB_NAME}"
+        echo "env.BUILD_TAG : ${env.BUILD_TAG}"
+        echo "env.JOB_URL : ${env.JOB_URL}"
+        echo "env.USER : ${env.USER}"
+        echo "env.GIT_COMMIT : ${env.GIT_COMMIT}" 
+        echo "env.GIT_COMMIT : ${env.GIT_PREVIOUS_COMMIT}"
+        echo "env.GIT_COMMIT : ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT}"
+
+        echo "env.JENKINS_HOME : ${env.JENKINS_HOME}"
+        echo "env.JOB_NAME : ${env.JOB_NAME}"
+        echo "env.BUILD_ID : ${env.BUILD_ID}"
+        echo "env.GIT_BRANCH : ${env.GIT_BRANCH}"
+        echo "env.EXECUTOR_NUMBER : ${env.EXECUTOR_NUMBER}"
+        echo "env.NODE_LABELS : ${env.NODE_LABELS}"
+        echo "env.LOGNAME : ${env.LOGNAME}"
+        echo "env.NODE_NAME : ${env.NODE_NAME}"
+        echo "env.BUILD_NUMBER : ${env.BUILD_NUMBER}"
         echo "scm.branches[0].name - ${scm.branches[0].name}"
 
         if (ref.contains('refs/heads/') ){
@@ -26,34 +41,8 @@ node {
     }
 
     stage ('Clone'){
-        try {
-            def gitVars = git branch: "${git_branch}", url: "${SOURCE_CODE_URL}"
-            // gitVars will contain the following keys: GIT_BRANCH, GIT_COMMIT, GIT_LOCAL_BRANCH, GIT_PREVIOUS_COMMIT, GIT_PREVIOUS_SUCCESSFUL_COMMIT, GIT_URL
-            println gitVars
-            env.GIT_COMMIT = gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT
-            println "Previous successful commit is : ${env.GIT_COMMIT}"
-            echo ("Previous successful commit is : ${gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT}")
-
-            shortCommit = sh(returnStdout: true, script: "git log -n 1 ").trim()
-            echo shortCommit
-
-            echo env.BUILD_TAG
-            echo env.JOB_URL
-            echo env.USER
-            echo env.GIT_COMMIT
-            echo env.JENKINS_HOME
-            echo env.JOB_NAME
-            echo env.BUILD_ID
-            echo env.GIT_BRANCH
-            echo env.EXECUTOR_NUMBER
-            echo env.NODE_LABELS
-            echo env.LOGNAME
-            echo env.NODE_NAME
-            echo env.BUILD_NUMBER
-
-        } catch (Exception e) {
-            echo "get git scm variables fail"
-        }
+        shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+        echo shortCommit
 
         echo ("clone : ${git_branch}")
         git branch: "${git_branch}", credentialsId: 'githu_ssh_minssan9', url: 'https://github.com/minssan9/api-gateway.git'
