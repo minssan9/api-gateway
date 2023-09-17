@@ -101,6 +101,7 @@ node {
                 sshCommand remote: remote, command: "sudo docker pull ${aws_ecrRegistry}/${ecrRepository}:latest"
                 sshCommand remote: remote, command: "sudo docker stop ${ecrRepository}"
                 sshCommand remote: remote, command: "sudo docker rm -f ${ecrRepository}"
-                sshCommand remote: remote, command: "sudo docker run --name ${env.JOB_NAME} -it -d --restart=always -p 31000:31000 -m 1900m -v /var/log:/var/log -e SPRING_PROFILES_ACTIVE=${git_branch} -h ${env.JOB_NAME}  ${aws_ecrRegistry}/${ecrRepository}:latest"        }
+                sshCommand remote: remote, command: "sudo docker run --name ${env.JOB_NAME} -it -d --restart=always -p 31000:31000 -m 1900m -v /var/log:/var/log -e SPRING_PROFILES_ACTIVE=${git_branch} -h ${env.JOB_NAME}  ${aws_ecrRegistry}/${ecrRepository}:latest"
+        }
     }
 }
