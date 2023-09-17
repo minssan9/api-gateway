@@ -37,6 +37,20 @@ node {
             shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
             echo shortCommit
 
+            echo env.BUILD_TAG
+            echo env.JOB_URL
+            echo env.USER
+            echo env.GIT_COMMIT
+            echo env.JENKINS_HOME
+            echo env.JOB_NAME
+            echo env.BUILD_ID
+            echo env.GIT_BRANCH
+            echo env.EXECUTOR_NUMBER
+            echo env.NODE_LABELS
+            echo env.LOGNAME
+            echo env.NODE_NAME
+            echo env.BUILD_NUMBER
+
         } catch (Exception e) {
             echo "get git scm variables fail"
         }
