@@ -34,7 +34,7 @@ node {
             println "Previous successful commit is : ${env.GIT_COMMIT}"
             echo ("Previous successful commit is : ${gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT}")
 
-            shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+            shortCommit = sh(returnStdout: true, script: "git log -n 1 ").trim()
             echo shortCommit
 
             echo env.BUILD_TAG

@@ -5,19 +5,18 @@
 #RUN gradle :clean :build -x test --no-daemon
 
 
-FROM 10.20.101.172:5000/openjdk11
-LABEL maintainer="sanghun.min@halla.com"
-VOLUME /hallahds/gateway
+FROM adoptopenjdk:11-jre-hotspot
+LABEL maintainer="minssan9@gmail.com"
 EXPOSE 31000
 
 #RUN mkdir /app
 #COPY --from=builder /app/build/libs/*.jar /app/hds_api_gateway.jar
-COPY /build/libs/*.jar /app/hds_api_gateway.jar
+COPY /build/libs/*.jar /app/api_gateway.jar
 
 ENV SPRING_PROFILES_ACTIVE develop
 RUN echo 'spring profile active='$SPRING_PROFILES_ACTIVE
 #ENTRYPOINT ["java", "-Dspring.profiles.active=${PROFILE}", "-jar", "/hds_api_gateway.jar"]
-ENTRYPOINT ["java", "-jar", "/app/hds_api_gateway.jar"]
+ENTRYPOINT ["java", "-jar", "/app/api_gateway.jar"]
 
 # docker command
 # docker build -t hds_api_gateway -f Dockerfile .
