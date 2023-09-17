@@ -23,25 +23,19 @@ node {
             git_branch = env.GIT_BRANCH.replace("origin/", "")
         }
         echo ("build with this branch : ${git_branch}")
-
-        echo ("GIT_COMMIT : ${GIT_COMMIT} ")
-        echo ("GIT_BRANCH : ${GIT_BRANCH} ")
-        echo ("GIT_LOCAL_BRANCH : ${GIT_LOCAL_BRANCH} ")
-        echo ("GIT_PREVIOUS_COMMIT : ${GIT_PREVIOUS_COMMIT} ")
-        echo ("GIT_PREVIOUS_SUCCESSFUL_COMMIT : ${GIT_PREVIOUS_SUCCESSFUL_COMMIT} ")
-        echo ("GIT_URL : ${GIT_URL} ")
-        echo ("GIT_URL_N : - ${GIT_URL_N} ")
-        echo ("GIT_AUTHOR_NAME : ${GIT_AUTHOR_NAME} ")
-        echo ("GIT_COMMITTER_EMAIL : ${GIT_COMMITTER_EMAIL} ")
     }
 
     stage ('Clone'){
-        def gitVars = git branch: "${git_branch}", url: "${SOURCE_CODE_URL}"
-        // gitVars will contain the following keys: GIT_BRANCH, GIT_COMMIT, GIT_LOCAL_BRANCH, GIT_PREVIOUS_COMMIT, GIT_PREVIOUS_SUCCESSFUL_COMMIT, GIT_URL
-        println gitVars
-        gitCommitId = gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT
-        println "Previous successful commit is : ${gitCommitId}"
-        echo ("Previous successful commit is : ${gitCommitId}")
+        try {
+             def gitVars = git branch: "${git_branch}", url: "${SOURCE_CODE_URL}"
+            // gitVars will contain the following keys: GIT_BRANCH, GIT_COMMIT, GIT_LOCAL_BRANCH, GIT_PREVIOUS_COMMIT, GIT_PREVIOUS_SUCCESSFUL_COMMIT, GIT_URL
+            println gitVars
+            env.GIT_COMMIT = gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+            println "Previous successful commit is : ${env.GIT_COMMIT}"
+            echo ("Previous successful commit is : ${env.GIT_COMMIT}")
+        } catch (Exception e) {
+            echo "get git scm variables fail"
+        }
 
         echo ("clone : ${git_branch}")
         git branch: "${git_branch}", credentialsId: 'githu_ssh_minssan9', url: 'https://github.com/minssan9/api-gateway.git'
@@ -50,6 +44,7 @@ node {
     if (git_branch != "develop"){
         git_branch = "release"
     }
+    job_type = 'api'
 
     stage("Build Jar"){
         sh "chmod +x gradlew"
