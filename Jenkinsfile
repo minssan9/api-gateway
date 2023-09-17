@@ -6,7 +6,7 @@ node {
     BUILD_ENVIRONMENT = "En9doorweb-1"
     EB_ENV_NAME = "En9doorweb-1"
 
-    SOURCE_CODE_URL = https://github.com/minssan9/api-gateway.git
+    SOURCE_CODE_URL = "https://github.com/minssan9/api-gateway.git"
 
     stage("Parameter Check") {
         echo "JOB_NAME - ${JOB_NAME}"
