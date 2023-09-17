@@ -6,11 +6,7 @@ node {
     BUILD_ENVIRONMENT = "En9doorweb-1"
     EB_ENV_NAME = "En9doorweb-1"
 
-    def gitVars = git branch: "$RELEASE_BRANCH", url: "$SOURCE_CODE_URL"
-    // gitVars will contain the following keys: GIT_BRANCH, GIT_COMMIT, GIT_LOCAL_BRANCH, GIT_PREVIOUS_COMMIT, GIT_PREVIOUS_SUCCESSFUL_COMMIT, GIT_URL
-    println gitVars
-    println "Previous successful commit is : ${gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT}"
-    gitCommitId = gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+    SOURCE_CODE_URL = https://github.com/minssan9/api-gateway.git
 
     stage("Parameter Check") {
         echo "JOB_NAME - ${JOB_NAME}"
@@ -28,6 +24,14 @@ node {
         }
         echo ("build with this branch : ${git_branch}")
     }
+
+
+    def gitVars = git branch: "${git_branch}", url: "${SOURCE_CODE_URL}"
+    // gitVars will contain the following keys: GIT_BRANCH, GIT_COMMIT, GIT_LOCAL_BRANCH, GIT_PREVIOUS_COMMIT, GIT_PREVIOUS_SUCCESSFUL_COMMIT, GIT_URL
+    println gitVars
+    println "Previous successful commit is : ${gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT}"
+    gitCommitId = gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+
 
     stage ('Clone'){
         echo ("clone : ${git_branch}")
