@@ -25,15 +25,14 @@ node {
         echo ("build with this branch : ${git_branch}")
     }
 
-
-    def gitVars = git branch: "${git_branch}", url: "${SOURCE_CODE_URL}"
-    // gitVars will contain the following keys: GIT_BRANCH, GIT_COMMIT, GIT_LOCAL_BRANCH, GIT_PREVIOUS_COMMIT, GIT_PREVIOUS_SUCCESSFUL_COMMIT, GIT_URL
-    println gitVars
-    println "Previous successful commit is : ${gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT}"
-    gitCommitId = gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT
-
-
     stage ('Clone'){
+        def gitVars = git branch: "${git_branch}", url: "${SOURCE_CODE_URL}"
+        // gitVars will contain the following keys: GIT_BRANCH, GIT_COMMIT, GIT_LOCAL_BRANCH, GIT_PREVIOUS_COMMIT, GIT_PREVIOUS_SUCCESSFUL_COMMIT, GIT_URL
+        println gitVars
+        gitCommitId = gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+        println "Previous successful commit is : ${gitCommitId}"
+        echo ("Previous successful commit is : ${gitCommitId}")
+
         echo ("clone : ${git_branch}")
         git branch: "${git_branch}", credentialsId: 'githu_ssh_minssan9', url: 'https://github.com/minssan9/api-gateway.git'
     }
